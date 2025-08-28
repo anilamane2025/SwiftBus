@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.anil.swiftBus.entity.Role;
 import com.anil.swiftBus.entity.User;
+import com.anil.swiftBus.enums.UserType;
 import com.anil.swiftBus.service.UserService;
 
 @Controller
@@ -52,10 +53,9 @@ public class UserController {
         user.setEnabled(true);
 
         // Assign default role USER
-        Role role = new Role();
-        role.setRole("USER");
-        role.setUserId(null); // Will be set automatically due to cascade persist
-        user.setRoles(Collections.singleton(role));
+        Role role = new Role(); // Will be set automatically due to cascade persist
+        role.setUserType(UserType.PASSENGER);
+        user.setRole(role);
 
         userService.saveUser(user);
 

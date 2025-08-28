@@ -1,11 +1,15 @@
 package com.anil.swiftBus.security;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.anil.swiftBus.entity.RolePermission;
 import com.anil.swiftBus.entity.User;
 
 public class CustomUserDetails implements UserDetails {
@@ -25,12 +29,24 @@ public class CustomUserDetails implements UserDetails {
         return user.getId();
     }
 
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles().stream()
-                .map(role -> (GrantedAuthority) () -> "ROLE_" + role.getRole())
-                //.toList();
-                .collect(Collectors.toList());
+        if (user.getRole() == null || user.getRole().getRolePermissions() == null) {
+            return java.util.Collections.emptySet();
+        }
+
+        // Add role as ROLE_{ROLE_NAME} and all permissions as authorities
+        java.util.Set<GrantedAuthority> authorities = user.getRole().getRolePermissions()
+            .stream()
+            .map(RolePermission::getPermission)
+            .map(p -> new SimpleGrantedAuthority(p.getName()))
+            .collect(Collectors.toSet());
+
+        // Also add role-based authority so hasRole(...) works:
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getUserType().name()));
+
+        return authorities;
     }
 
     @Override

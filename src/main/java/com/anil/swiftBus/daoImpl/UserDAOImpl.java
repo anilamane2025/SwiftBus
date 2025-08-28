@@ -1,5 +1,7 @@
 package com.anil.swiftBus.daoImpl;
 
+import java.util.Optional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -18,16 +20,24 @@ public class UserDAOImpl implements UserDAO {
     private EntityManager entityManager;
 
     @Override
-    public User findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         try {
-        	return entityManager.createQuery("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.username = :username", User.class)
-                    .setParameter("username", username)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null;  // Or throw custom exception
-        } catch (Exception e) {
-            throw new DataAccessException("Error accessing data", e);
-        }
+        	User user = entityManager.createQuery(
+                    "SELECT u FROM User u " +
+                            "LEFT JOIN FETCH u.role r " +       //  User has a single Role (ManyToOne)
+                            "LEFT JOIN FETCH r.rolePermissions rp " +
+                            "LEFT JOIN FETCH rp.permission p " +
+                            "WHERE u.username = :username", User.class)
+                        .setParameter("username", username)
+                        .getSingleResult();
+
+                    return Optional.of(user);
+
+                } catch (NoResultException e) {
+                    return Optional.empty();  // correct way for Optional
+                } catch (Exception e) {
+                    throw new RuntimeException("Error accessing data", e); // wrap in runtime exception
+                }
     }
     
     @Override

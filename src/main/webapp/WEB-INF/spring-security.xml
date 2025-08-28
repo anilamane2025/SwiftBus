@@ -21,12 +21,21 @@
 	    <intercept-url pattern="/" access="permitAll" />
         <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
         <intercept-url pattern="/agent/**" access="hasRole('AGENT')" />
-        <intercept-url pattern="/user/**" access="hasRole('USER')" />
+        <intercept-url pattern="/user/**" access="hasRole('PASSENGER')" />
+        <intercept-url pattern="/passenger/**" access="hasRole('PASSENGER')" />
+
+    <!-- Example permission-based restriction -->
+    <intercept-url pattern="/bills/add" access="hasAuthority('BILL_ADD')" />
+    <intercept-url pattern="/bills/delete" access="hasAuthority('BILL_DELETE')" />
         
         <form-login login-page="/login"
                     authentication-success-handler-ref="customSuccessHandler"
                     authentication-failure-url="/login?error=true" />
-        <logout logout-success-url="/login?logout=true" />
+        <logout logout-success-url="/login?logout=true" invalidate-session="true"
+                delete-cookies="JSESSIONID" />
+        
+        <!-- Access Denied (403) handler -->
+    	<access-denied-handler error-page="/access-denied" />
     </http>
     
 

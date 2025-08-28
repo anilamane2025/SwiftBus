@@ -1,6 +1,11 @@
 package com.anil.swiftBus.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
+
+import com.anil.swiftBus.enums.UserType;
 
 @Entity
 @Table(name = "roles")
@@ -10,11 +15,12 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type",nullable = false, unique = true)
+    private UserType userType; // ADMIN, AGENT, PASSENGER
 
-    private String role;
-
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<RolePermission> rolePermissions = new HashSet<>();
     // Getters and setters
 
     public Integer getId() {
@@ -23,18 +29,19 @@ public class Role {
     public void setId(Integer id) {
         this.id = id;
     }
+	public UserType getUserType() {
+		return userType;
+	}
+	public void setUserType(UserType userType) {
+		this.userType = userType;
+	}
+	public Set<RolePermission> getRolePermissions() {
+		return rolePermissions;
+	}
+	public void setRolePermissions(Set<RolePermission> rolePermissions) {
+		this.rolePermissions = rolePermissions;
+	}
 
-    public Long getUserId() {
-        return userId;
-    }
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getRole() {
-        return role;
-    }
-    public void setRole(String role) {
-        this.role = role;
-    }
+	
+   
 }

@@ -1,5 +1,9 @@
 package com.anil.swiftBus.entity;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import java.util.Set;
 
 @Entity
@@ -10,20 +14,25 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Email @Size(max = 150)
     @Column(nullable = false, unique = true)
     private String username;  // This will be the email
 
+    @NotBlank
     @Column(nullable = false)
     private String password;
 
     private boolean enabled;
 
+    @Size(max = 10)
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @NotBlank @Size(max = 150)
     @Column(name = "first_name")
     private String firstName;
 
+    @NotBlank @Size(max = 150)
     @Column(name = "last_name")
     private String lastName;
 
@@ -31,9 +40,9 @@ public class User {
     private String city;
     private String state;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")  // FK to this user
-    private Set<Role> roles;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     // Getters and setters below
 
@@ -106,11 +115,12 @@ public class User {
     public void setState(String state) {
         this.state = state;
     }
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
-    public Set<Role> getRoles() {
-        return roles;
-    }
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
+    
 }
