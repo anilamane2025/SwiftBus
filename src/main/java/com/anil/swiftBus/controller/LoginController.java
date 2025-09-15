@@ -19,7 +19,7 @@ public class LoginController {
         return "index"; // index.jsp
     }
 
-	@GetMapping("login")
+	@GetMapping("/login")
     public String loginPage(HttpServletRequest request,
                             HttpServletResponse response,
                             Authentication authentication) throws IOException {
@@ -57,10 +57,7 @@ public class LoginController {
         return "access-denied"; 
     }
     
-    @GetMapping("/admin/home")
-    public String adminHome() {
-        return "home"; 
-    }
+   
     
     @GetMapping("/agent/home")
     public String agentHome() {

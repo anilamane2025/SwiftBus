@@ -15,11 +15,32 @@
 			class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
 			<h6 class="fw-semibold mb-0">Dashboard</h6>
 			<ul class="d-flex align-items-center gap-2">
-				<li class="fw-medium"><a href="#"
+				<li class="fw-medium">
+				
+				<sec:authorize access="hasRole('ADMIN')">
+       <a href="<c:url value='/admin/home' />"
 					class="d-flex align-items-center gap-1 hover-text-primary"> <iconify-icon
 							icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
 						Dashboard
-				</a></li>
+				</a>
+    </sec:authorize>
+
+    <sec:authorize access="hasRole('AGENT')">
+        <a href="<c:url value='/agent/home' />"
+					class="d-flex align-items-center gap-1 hover-text-primary"> <iconify-icon
+							icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
+						Dashboard
+				</a>
+    </sec:authorize>
+
+    <sec:authorize access="hasRole('PASSENGER')">
+        <a href="<c:url value='/passenger/home' />"
+					class="d-flex align-items-center gap-1 hover-text-primary"> <iconify-icon
+							icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
+						Dashboard
+				</a>
+    </sec:authorize>
+				</li>
 			</ul>
 		</div>
 
@@ -135,7 +156,7 @@
 
 	</div>
 	<jsp:include page="templates/footer.jsp" />
-	</main>
+	
 	<jsp:include page="templates/scripts.jsp" />
 
 </body>

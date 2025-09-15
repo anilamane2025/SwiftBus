@@ -1,8 +1,6 @@
 package com.anil.swiftBus.security;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.GrantedAuthority;

@@ -16,16 +16,16 @@
   </div>
   <div class="sidebar-menu-area">
     <ul class="sidebar-menu" id="sidebar-menu">
+      
+     
+      <sec:authorize access="hasRole('ADMIN')">
       <li>
-        <a href="javascript:void(0)">
+        <a href="<c:url value='/admin/home' />">
           <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
           <span>Dashboard</span>
         </a>
         
       </li> 
-      
-      <sec:authorize access="hasRole('ADMIN')">
-    
       
       <li class="dropdown">
         <a href="javascript:void(0)">
@@ -59,9 +59,43 @@
           </li>
         </ul>
       </li>
+      <li class="dropdown">
+        <a href="javascript:void(0)">
+          <i class="ri-user-settings-line text-xl me-14 d-flex w-auto"></i>
+          <span>Role &amp; Access</span> 
+        </a>
+        <ul class="sidebar-submenu show">
+          <li>
+            <a href="role-access.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Role &amp; Access</a>
+          </li>
+          <li>
+            <a href="/permissions"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Permission</a>
+          </li>
+        </ul>
+      </li>
 
 	</sec:authorize>
+    
 
+    <sec:authorize access="hasRole('AGENT')">
+       <li>
+        <a href="<c:url value='/agent/home' />">
+          <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+          <span>Dashboard</span>
+        </a>
+        
+      </li> 
+    </sec:authorize>
+
+    <sec:authorize access="hasRole('PASSENGER')">
+		<li>
+        <a href="<c:url value='/passenger/home' />">
+          <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
+          <span>Dashboard</span>
+        </a>
+        
+      </li> 
+	</sec:authorize>
       <li>
         <a href="gallery.html">
           <iconify-icon icon="solar:gallery-wide-linear" class="menu-icon"></iconify-icon>

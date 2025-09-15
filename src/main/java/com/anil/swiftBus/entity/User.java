@@ -1,10 +1,21 @@
 package com.anil.swiftBus.entity;
-import javax.persistence.*;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-
-import java.util.Set;
 
 @Entity
 @Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
@@ -25,7 +36,7 @@ public class User {
     private boolean enabled;
 
     @Size(max = 10)
-    @Column(name = "phone_number")
+    @Column(name = "phone_number",nullable = false, unique = true)
     private String phoneNumber;
 
     @NotBlank @Size(max = 150)
@@ -37,12 +48,32 @@ public class User {
     private String lastName;
 
     private String gender;
-    private String city;
-    private String state;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id", nullable = false)  // City table foreign key
+    private City city;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+    
+    @Column(name = "created_at", nullable = false, updatable = false)
+	private LocalDateTime createdAt;
+    
+    @Column(name = "updated_at")
+	private LocalDateTime updatedAt;
+
+	@PrePersist
+	protected void onCreate() {
+		if (createdAt == null) {
+			createdAt = LocalDateTime.now();
+		}
+		updatedAt = createdAt;
+	}
+
+	@PreUpdate
+	protected void onUpdate() {
+		updatedAt = LocalDateTime.now();
+	}
 
     // Getters and setters below
 
@@ -102,24 +133,36 @@ public class User {
         this.gender = gender;
     }
 
-    public String getCity() {
-        return city;
-    }
-    public void setCity(String city) {
-        this.city = city;
-    }
+    
+	public City getCity() {
+		return city;
+	}
 
-    public String getState() {
-        return state;
-    }
-    public void setState(String state) {
-        this.state = state;
-    }
+	public void setCity(City city) {
+		this.city = city;
+	}
+
 	public Role getRole() {
 		return role;
 	}
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
     

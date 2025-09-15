@@ -34,6 +34,10 @@
         <sec:authentication property="principal.fullName"/>
     </h6>
 
+	<c:set var="userId">
+		    <sec:authentication property="principal.id" />
+		</c:set>
+		
     <sec:authorize access="hasRole('ADMIN')">
         <span class="text-secondary-light fw-medium text-sm">Admin</span>
     </sec:authorize>
@@ -42,8 +46,8 @@
         <span class="text-secondary-light fw-medium text-sm">Agent</span>
     </sec:authorize>
 
-    <sec:authorize access="hasRole('USER')">
-        <span class="text-secondary-light fw-medium text-sm">User</span>
+    <sec:authorize access="hasRole('PASSENGER')">
+        <span class="text-secondary-light fw-medium text-sm">Passenger</span>
     </sec:authorize>
 </div>
               <button type="button" class="hover-text-danger">
@@ -52,7 +56,7 @@
             </div>
             <ul class="to-top-list">
               <li>
-                <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3" href="view-profile.html"> 
+                <a class="dropdown-item text-black px-0 py-8 hover-bg-transparent hover-text-primary d-flex align-items-center gap-3" href="<c:url value='/profile/${userId}' />"> 
                 <iconify-icon icon="solar:user-linear" class="icon text-xl"></iconify-icon>  My Profile</a>
               </li>
               

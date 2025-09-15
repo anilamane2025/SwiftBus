@@ -66,13 +66,21 @@
                         </div>
                     </div>
 				</c:if>
+				<c:if test="${not empty param.registered}">
+				    <div class="mb-5 alert alert-success bg-success-100 text-success-600 border-success-100 px-24 py-11 mb-0 fw-semibold text-lg radius-8" role="alert">
+                        <div class="d-flex align-items-center justify-content-between text-lg">
+                            You have successfully registered.
+                            <button class="remove-button text-success-600 text-xxl line-height-1"> <iconify-icon icon="iconamoon:sign-times-light" class="icon"></iconify-icon></button>
+                        </div>
+                    </div>
+				</c:if>
             </div>
             <form action="<c:url value='/login' />" method="post">
                 <div class="icon-field mb-16">
                     <span class="icon top-50 translate-middle-y">
                         <iconify-icon icon="mage:email"></iconify-icon>
                     </span>
-                    <input type="email" name="username" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Email" required="required">
+                    <input type="text" name="username" class="form-control h-56-px bg-neutral-50 radius-12" placeholder="Email & Phone Number" required="required">
                 </div>
                 <div class="position-relative mb-20">
                     <div class="icon-field">

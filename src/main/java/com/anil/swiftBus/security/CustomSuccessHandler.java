@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.util.Collection;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.core.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +32,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
                 case "ROLE_AGENT":
                     redirectUrl = "/agent/home";
                     break;
-                case "ROLE_USER":
-                    redirectUrl = "/user/home";
+                case "ROLE_PASSENGER":
+                    redirectUrl = "/passenger/home";
                     break;
             }
         }
