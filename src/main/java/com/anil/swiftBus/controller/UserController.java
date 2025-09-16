@@ -5,6 +5,12 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,12 +36,13 @@ public class UserController {
     
     private CityService cityService;
     
+    private UserDetailsService userDetailsService;
     
-    
-    public UserController(UserService userService, BCryptPasswordEncoder passwordEncoder, CityService cityService) {
+    public UserController(UserService userService, BCryptPasswordEncoder passwordEncoder, CityService cityService,UserDetailsService userDetailsService) {
 		this.userService = userService;
 		this.passwordEncoder = passwordEncoder;
 		this.cityService = cityService;
+		this.userDetailsService = userDetailsService;
 	}
 
 	@GetMapping("/sign-up")
@@ -120,7 +127,7 @@ public class UserController {
     }
 
     @PostMapping("/profile/{id}")
-    public String updateProfile(@PathVariable("id") Long id, @Valid @ModelAttribute("user") UserDTO userDTO, BindingResult result, Model model) {
+    public String updateProfile(@PathVariable("id") Long id, @Valid @ModelAttribute("user") UserDTO userDTO, BindingResult result, Model model,Authentication authentication) {
     	Optional<UserDTO> existingUserOpt = userService.findById(id);
 
         if (existingUserOpt.isPresent()) {
@@ -166,6 +173,16 @@ public class UserController {
 
         // update
         userService.update(id, userDTO);
+        String username = authentication.getName();
+        UserDetails updatedUserDetails = userDetailsService.loadUserByUsername(username);
+
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                updatedUserDetails,
+                authentication.getCredentials(),
+                updatedUserDetails.getAuthorities()
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
         return "redirect:/profile/" + id;
     }
     

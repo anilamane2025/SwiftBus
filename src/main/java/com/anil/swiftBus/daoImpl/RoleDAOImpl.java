@@ -1,5 +1,7 @@
 package com.anil.swiftBus.daoImpl;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -27,4 +29,21 @@ public class RoleDAOImpl implements RoleDAO {
 	public void saveRolePermission(RolePermission rolePermission) {
 		em.persist(rolePermission);
 	}
+
+	@Override
+	public List<Role> findAll() {
+		return em.createQuery("SELECT DISTINCT r FROM Role r LEFT JOIN FETCH r.rolePermissions rp LEFT JOIN FETCH rp.permission ORDER BY r.id ASC", Role.class)
+                .getResultList();
+	}
+
+	@Override
+	public Role findById(Long roleId) {
+		return em.find(Role.class, roleId);
+	}
+
+	@Override
+	public void removeRolePermission(RolePermission rolePermission) {
+		em.remove(rolePermission);
+	}
+
 }

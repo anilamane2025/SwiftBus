@@ -57,7 +57,7 @@
                 <sec:authorize access="hasAuthority('PERMISSION_ADD')">
                 <button type="button" class="btn btn-primary text-sm btn-sm d-flex align-items-center " data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"><template shadowrootmode="open"><style data-style="data-style">:host{display:inline-block;vertical-align:0}span,svg{display:block}</style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z"></path></svg></template></iconify-icon>
-                    Add New Role
+                    Add New Permission
                 </button>
                 </sec:authorize>
             </div>
@@ -108,7 +108,7 @@
         <div class="modal-dialog modal-lg modal-dialog modal-dialog-centered">
             <div class="modal-content radius-16 bg-base">
                 <div class="modal-header py-16 px-24 border border-top-0 border-start-0 border-end-0">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Role</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Permission</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-24">
@@ -117,7 +117,7 @@
                      
                         <div class="row">   
                             <div class="col-12 mb-20">
-                                <label class="form-label fw-semibold text-primary-light text-sm mb-8">Role  Name</label>
+                                <label class="form-label fw-semibold text-primary-light text-sm mb-8">Permission  Name</label>
                                 <form:input path="name" cssClass="form-control radius-8" placeholder="Enter Permission Name" />
             					<form:errors path="name" cssClass="text-danger"/>
                             </div>

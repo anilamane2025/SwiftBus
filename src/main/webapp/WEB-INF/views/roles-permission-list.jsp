@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <jsp:include page="templates/head.jsp" />
@@ -10,127 +11,75 @@
 	<jsp:include page="templates/sidebar.jsp" />
 	<jsp:include page="templates/header.jsp" />
 
-	<div class="dashboard-main-body">
-		<div
-			class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-			<h6 class="fw-semibold mb-0">Permissions</h6>
-			<ul class="d-flex align-items-center gap-2">
-				<li class="fw-medium">
-				
-				<sec:authorize access="hasRole('ADMIN')">
-       <a href="<c:url value='/admin/home' />"
-					class="d-flex align-items-center gap-1 hover-text-primary"> <iconify-icon
-							icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
-						Dashboard
-				</a>
-    </sec:authorize>
-				</li>
-				<li>-</li>
-    			<li class="fw-medium">Permission List</li>
-			</ul>
-		</div>
-
-		<sec:authorize access="hasRole('ADMIN')">
-<div class="card basic-data-table">
-
-      <div class="card-body">
-        <table class="table bordered-table mb-0" id="dataTable" data-page-length='10'>
-          <thead>
-            <tr>
-              <th scope="col">
-                <div class="form-check style-check d-flex align-items-center">
-                  <label class="form-check-label">
-                    S.L
-                  </label>
-                </div>
-              </th>
-              <th scope="col">Invoice</th>
-              <th scope="col">Name</th>
-              <th scope="col">Issued Date</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <div class="form-check style-check d-flex align-items-center">
-                  <input class="form-check-input" type="checkbox">
-                  <label class="form-check-label">
-                    01
-                  </label>
-                </div>
-              </td>
-              <td><a href="javascript:void(0)" class="text-primary-600">#526534</a></td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <img src="assets/images/user-list/user-list1.png" alt="" class="flex-shrink-0 me-12 radius-8">
-                  <h6 class="text-md mb-0 fw-medium flex-grow-1">Kathryn Murphy</h6>
-                </div>
-              </td>
-              <td>25 Jan 2024</td>
-              <td>$200.00</td>
-              <td> <span class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Paid</span> </td>
-              <td>
-                <a href="javascript:void(0)" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
-                  <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
-                </a>
-                <a href="javascript:void(0)" class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                  <iconify-icon icon="lucide:edit"></iconify-icon>
-                </a>
-                <a href="javascript:void(0)" class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                  <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                </a>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="form-check style-check d-flex align-items-center">
-                  <input class="form-check-input" type="checkbox">
-                  <label class="form-check-label">
-                    02
-                  </label>
-                </div>
-              </td>
-              <td><a href="javascript:void(0)" class="text-primary-600">#696589</a></td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <img src="assets/images/user-list/user-list2.png" alt="" class="flex-shrink-0 me-12 radius-8">
-                  <h6 class="text-md mb-0 fw-medium flex-grow-1">Annette Black</h6>
-                </div>
-              </td>
-              <td>25 Jan 2024</td>
-              <td>$200.00</td>
-              <td> <span class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Paid</span> </td>
-              <td>
-                <a href="javascript:void(0)" class="w-32-px h-32-px bg-primary-light text-primary-600 rounded-circle d-inline-flex align-items-center justify-content-center">
-                  <iconify-icon icon="iconamoon:eye-light"></iconify-icon>
-                </a>
-                <a href="javascript:void(0)" class="w-32-px h-32-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                  <iconify-icon icon="lucide:edit"></iconify-icon>
-                </a>
-                <a href="javascript:void(0)" class="w-32-px h-32-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center">
-                  <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
-                </a>
-              </td>
-            </tr>
-            
-          </tbody>
-        </table>
-      </div>
+<div class="dashboard-main-body">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+        <h6 class="fw-semibold mb-0">Role-Permission Management</h6>
+        <ul class="d-flex align-items-center gap-2">
+            <li class="fw-medium">
+                <sec:authorize access="hasRole('ADMIN')">
+                    <a href="<c:url value='/admin/home' />"
+                       class="d-flex align-items-center gap-1 hover-text-primary">
+                        <iconify-icon icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
+                        Dashboard
+                    </a>
+                </sec:authorize>
+            </li>
+            <li>-</li>
+            <li class="fw-medium">Role &amp; Access</li>
+        </ul>
     </div>
-			
-		</sec:authorize>
 
-		
+    <sec:authorize access="hasAuthority('ROLE_PERMISSION_MANAGE')">
+        <div class="card basic-data-table">
+            <div class="card-body">
+              <c:url var="saveRolePermissionUrl" value="/roles/save-permissions" />
+<form:form method="post" action="${saveRolePermissionUrl}" modelAttribute="rolePermissionDTO">
 
-	</div>
+    <c:forEach var="r" items="${roles}">
+	    <div class="card mb-24 shadow-sm">
+	        <div class="card-header bg-base py-12 px-24">
+	            <h6 class="text-lg fw-semibold mb-0">${r.userType}</h6>
+	        </div>
+	        <div class="card-body p-24">
+	            
+	            <!-- Hidden ensures roleId is always sent, even if no checkbox checked -->
+	            <input type="hidden" name="rolePermissions[${r.id}]" value="" />
+	
+	            <div class="row">
+	                <c:forEach var="p" items="${permissions}" varStatus="status">
+	                    <div class="col-md-3 col-sm-4 col-6 mb-16">
+	                        <div class="form-switch switch-success d-flex align-items-center gap-3">
+	                            <input class="form-check-input" type="checkbox" role="switch"
+	                                   id="role${r.id}_perm${p.id}"
+	                                   name="rolePermissions[${r.id}]"
+	                                   value="${p.id}"
+	                                   <c:if test="${rolePermissionMap[r.id].contains(p.id)}">checked</c:if> />
+	                            <label class="form-check-label line-height-1 fw-medium text-secondary-light"
+	                                   for="role${r.id}_perm${p.id}">${p.name}</label>
+	                        </div>
+	                    </div>
+	                </c:forEach>
+	            </div>
+	        </div>
+	    </div>
+	</c:forEach>
+
+
+    <div class="mt-3 text-end">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </div>
+</form:form>
+
+
+
+            </div>
+        </div>
+    </sec:authorize>
+
+</div>
 	<jsp:include page="templates/footer.jsp" />
 	
 	<jsp:include page="templates/scripts.jsp" />
-<script>
-  let table = new DataTable('#dataTable');
-</script>
+
 </body>
 </html>

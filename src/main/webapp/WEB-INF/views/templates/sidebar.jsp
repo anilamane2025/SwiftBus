@@ -66,7 +66,7 @@
         </a>
         <ul class="sidebar-submenu show">
           <li>
-            <a href="role-access.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Role &amp; Access</a>
+            <a href="/roles/permissions"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Role &amp; Access</a>
           </li>
           <li>
             <a href="/permissions"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Permission</a>

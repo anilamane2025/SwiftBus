@@ -4,6 +4,11 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +29,9 @@ public class PermissionController {
 	
 	@Autowired
     private PermissionService permissionService;
+	
+	@Autowired
+    private UserDetailsService userDetailsService;
 
 	@GetMapping({"/",""})
 	@PreAuthorize("hasAuthority('PERMISSION_VIEW')")
@@ -38,7 +46,8 @@ public class PermissionController {
     public String addPermission( @Valid @ModelAttribute("permission") PermissionDTO dto,
             BindingResult result,
             RedirectAttributes redirectAttributes,
-            Model model) {
+            Model model,
+            Authentication authentication) {
 
         if (permissionService.existsByName(dto.getName())) {
             result.rejectValue("name", "error.permission", "Permission name must be unique");
@@ -51,6 +60,16 @@ public class PermissionController {
         }
         try {
         	permissionService.addPermission(dto);
+        	String username = authentication.getName();
+            UserDetails updatedUserDetails = userDetailsService.loadUserByUsername(username);
+
+            Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                    updatedUserDetails,
+                    authentication.getCredentials(),
+                    updatedUserDetails.getAuthorities()
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
     		redirectAttributes.addFlashAttribute("success", "Permission saved successfully!");
     		} catch (Exception e) {
     		redirectAttributes.addFlashAttribute("error", "Error adding permission: " + e.getMessage());
