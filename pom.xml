@@ -114,6 +114,12 @@
         <artifactId>jstl</artifactId>
         <version>1.2</version>
     </dependency>
+    
+    <dependency>
+	  <groupId>com.fasterxml.jackson.core</groupId>
+	  <artifactId>jackson-databind</artifactId>
+	  <version>2.17.2</version>
+	</dependency>
 
     <!-- Servlet API (Tomcat provides it, so keep scope provided) -->
     <dependency>
