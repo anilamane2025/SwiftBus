@@ -141,6 +141,10 @@ public class UserController {
 
             model.addAttribute("cities", cities);
             model.addAttribute("states", states);
+            
+            ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO();
+            changePasswordDTO.setId(id);
+            model.addAttribute("changePasswordDTO", changePasswordDTO);
 
             return "view-profile";
         }
@@ -167,6 +171,10 @@ public class UserController {
 
             model.addAttribute("cities", cities);
             model.addAttribute("states", states);
+            
+            ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO();
+            changePasswordDTO.setId(id);
+            model.addAttribute("changePasswordDTO", changePasswordDTO);
 
             return "view-profile";
         }
