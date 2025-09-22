@@ -34,7 +34,7 @@
         </a>
         <ul class="sidebar-submenu">
           <li>
-            <a href="users-list.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Agents List</a>
+            <a href="/admin/agent-list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Agents List</a>
           </li>
           <li>
             <a href="add-user.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Add Agents</a>
@@ -48,15 +48,13 @@
       <li class="dropdown">
         <a href="javascript:void(0)">
           <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
-          <span>Users</span> 
+          <span>Passengers</span> 
         </a>
         <ul class="sidebar-submenu">
           <li>
-            <a href="users-list.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Users List</a>
+            <a href="/admin/passenger-list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Passenger List</a>
           </li>
-          <li>
-            <a href="view-profile.html"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> View Profile</a>
-          </li>
+          
         </ul>
       </li>
       <li class="dropdown">
