@@ -44,6 +44,11 @@
 	    <error-code>500</error-code>
 	    <location>/WEB-INF/views/error-500.jsp</location>
 	</error-page>
+	
+	<session-config>
+	    <!-- in minutes -->
+	    <session-timeout>5</session-timeout>
+	</session-config>
 
     <!-- Security filter -->
     <filter>
