@@ -128,6 +128,13 @@
         <version>4.0.1</version>
         <scope>provided</scope>
     </dependency>
+    
+	<dependency>
+	  <groupId>com.googlecode.libphonenumber</groupId>
+	  <artifactId>libphonenumber</artifactId>
+	  <version>8.13.45</version>
+	</dependency>
+
 </dependencies>
 
 	<build>

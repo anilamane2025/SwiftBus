@@ -18,7 +18,22 @@
     <context:component-scan base-package="com.anil.swiftBus"/>
     
     <!-- Add support for conversion, formatting and validation support -->
-	<mvc:annotation-driven/>
+	
+	<!-- i18n / validation messages -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	    <!-- looks for src/main/resources/messages.properties (and locale variants) -->
+	    <property name="basename" value="messages"/>
+	    <property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+	
+	<!-- Hibernate Validator with our messageSource -->
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+	    <property name="validationMessageSource" ref="messageSource"/>
+	</bean>
+	
+	<!-- Make MVC use our validator -->
+	<mvc:annotation-driven validator="validator"/>
+
 
 	<!-- Define Spring MVC view resolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

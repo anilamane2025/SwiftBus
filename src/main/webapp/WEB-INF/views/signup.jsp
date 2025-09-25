@@ -116,6 +116,7 @@
 							<div class="mb-20">
 								<label class="form-label">Phone Number</label>
 								<form:input path="phoneNumber" cssClass="form-control radius-8" />
+								<%-- <form:input path="phoneNumber" cssClass="form-control radius-8 ${phoneInvalid ? 'is-invalid' : ''}"/> --%>
 								<form:errors path="phoneNumber" cssClass="invalid-feedback" />
 							</div>
 						</div>

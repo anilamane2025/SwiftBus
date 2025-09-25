@@ -3,8 +3,9 @@ package com.anil.swiftBus.dto;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.anil.swiftBus.validation.ValidPhoneNumber;
 
 public class RegistrationDTO {
 	
@@ -22,7 +23,13 @@ public class RegistrationDTO {
 
     @NotBlank(message = "Phone number is required")
     @Size(max = 10, message = "Phone number should be at most 10 digits.")
-    @Pattern(regexp = "\\d{10}", message = "Phone number must be a valid 10-digit number.")
+    //@Pattern(regexp = "\\d{10}", message = "Phone number must be a valid 10-digit number.")
+    /*@Pattern(
+    	      regexp = "^(?!(\\d)\\1{9})[6-9]\\d{9}$",
+    	      message = "Enter a valid Indian mobile number"
+    	    )*/
+    //@ValidPhoneNumber(region = "IN", mobileOnly = true)
+    @ValidPhoneNumber(region = "IN", mobileOnly = true)
     private String phoneNumber;
 
    
