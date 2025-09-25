@@ -19,6 +19,7 @@
     
     <!-- Add support for conversion, formatting and validation support -->
 	
+	<!-- testing -->
 	<!-- i18n / validation messages -->
 	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
 	    <!-- looks for src/main/resources/messages.properties (and locale variants) -->

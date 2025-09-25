@@ -29,6 +29,7 @@ public class RegistrationDTO {
     	      message = "Enter a valid Indian mobile number"
     	    )*/
     //@ValidPhoneNumber(region = "IN", mobileOnly = true)
+    //@ValidPhoneNumber(region = "IN", mobileOnly = true)
     @ValidPhoneNumber(region = "IN", mobileOnly = true)
     private String phoneNumber;
 

@@ -64,7 +64,7 @@ public class PhoneNumberValidator implements ConstraintValidator<ValidPhoneNumbe
             return false;
         }
     }
-
+    //testing
     private boolean allSameDigits(String s) {
         if (s.length() <= 1) return true;
         char first = s.charAt(0);
