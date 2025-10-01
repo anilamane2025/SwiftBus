@@ -1,0 +1,54 @@
+package com.anil.swiftBus.ModelMapper;
+
+import com.anil.swiftBus.dto.RouteDTO;
+import com.anil.swiftBus.dto.RouteStopDTO;
+import com.anil.swiftBus.entity.Route;
+import com.anil.swiftBus.entity.RouteStop;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class RouteMapper {
+
+    public static RouteDTO toDTO(Route entity) {
+        if (entity == null) {
+            return null;
+        }
+        RouteDTO dto = new RouteDTO();
+        dto.setRouteId(entity.getRouteId());
+        dto.setRouteName(entity.getRouteName());
+        dto.setDistanceKm(entity.getDistanceKm());
+        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setUpdatedAt(entity.getUpdatedAt());
+        dto.setEnabled(entity.isEnabled());
+
+        if (entity.getStops() != null) {
+            List<RouteStopDTO> stopDTOs = entity.getStops().stream()
+                    .map(RouteStopMapper::toDTO)
+                    .collect(Collectors.toList());
+            dto.setStops(stopDTOs);
+        }
+        return dto;
+    }
+
+    public static Route toEntity(RouteDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+        Route entity = new Route();
+        entity.setRouteId(dto.getRouteId());
+        entity.setRouteName(dto.getRouteName());
+        entity.setDistanceKm(dto.getDistanceKm());
+        entity.setEnabled(true);
+
+        if (dto.getStops() != null) {
+            List<RouteStop> stops = dto.getStops().stream()
+                    .map(RouteStopMapper::toEntity)
+                    .collect(Collectors.toList());
+
+            stops.forEach(stop -> stop.setRoute(entity));
+            entity.setStops(stops);
+        }
+        return entity;
+    }
+}

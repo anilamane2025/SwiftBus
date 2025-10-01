@@ -60,7 +60,9 @@
           <li>
             <a href="/admin/bus/bus-list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Bus List</a>
           </li>
-          
+          <li>
+            <a href="/admin/bus-routes/routes-list"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Routes</a>
+          </li>
         </ul>
       </li>
       <li class="dropdown">
