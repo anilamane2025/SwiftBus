@@ -14,6 +14,14 @@ public class RouteMapper {
         if (entity == null) {
             return null;
         }
+        if (entity.getStops() != null) {
+            entity.getStops().forEach(stop -> {
+                if (stop.getStopPoints() != null) {
+                    stop.getStopPoints().size(); 
+                }
+            });
+            entity.getStops().size(); 
+        }
         RouteDTO dto = new RouteDTO();
         dto.setRouteId(entity.getRouteId());
         dto.setRouteName(entity.getRouteName());
@@ -28,6 +36,7 @@ public class RouteMapper {
                     .collect(Collectors.toList());
             dto.setStops(stopDTOs);
         }
+        
         return dto;
     }
 

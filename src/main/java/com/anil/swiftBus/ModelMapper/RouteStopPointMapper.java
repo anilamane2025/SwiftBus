@@ -3,6 +3,7 @@ package com.anil.swiftBus.ModelMapper;
 import com.anil.swiftBus.dto.RouteStopPointDTO;
 import com.anil.swiftBus.entity.RouteStop;
 import com.anil.swiftBus.entity.RouteStopPoint;
+import com.anil.swiftBus.enums.StopPointType;
 
 public class RouteStopPointMapper {
 
@@ -11,7 +12,7 @@ public class RouteStopPointMapper {
         dto.setRouteStopPointId(entity.getRouteStopPointId());
         dto.setRouteStopId(entity.getRouteStop().getRouteStopId());
         dto.setPointName(entity.getPointName());
-        dto.setPointType(entity.getPointType());
+        dto.setPointType(entity.getPointType().name());
         dto.setLandmark(entity.getLandmark());
         dto.setEnabled(entity.isEnabled());
         return dto;
@@ -22,7 +23,7 @@ public class RouteStopPointMapper {
         entity.setRouteStopPointId(dto.getRouteStopPointId());
         entity.setRouteStop(parentStop);
         entity.setPointName(dto.getPointName());
-        entity.setPointType(dto.getPointType());
+        entity.setPointType((dto.getPointType().equals("PICKUP"))?StopPointType.PICKUP:StopPointType.DROP);
         entity.setLandmark(dto.getLandmark());
         entity.setEnabled(dto.isEnabled());
         return entity;

@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 public class RouteStopDTO {
 
@@ -41,6 +42,8 @@ public class RouteStopDTO {
     
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    
+    private List<RouteStopPointDTO> stopPoints;
 
     // Getters & Setters
     public Long getRouteStopId() {
@@ -141,4 +144,13 @@ public class RouteStopDTO {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+	public List<RouteStopPointDTO> getStopPoints() {
+		return stopPoints;
+	}
+
+	public void setStopPoints(List<RouteStopPointDTO> stopPoints) {
+		this.stopPoints = stopPoints;
+	}
+    
 }
