@@ -92,6 +92,20 @@ public class RouteServiceImpl implements RouteService {
                 existingStop.setEnabled(false);
             }
         }
+        for (RouteStop existingStop : existingStops) {
+            if (!incomingStopIds.contains(existingStop.getRouteStopId())) {
+                existingStop.setEnabled(false);
+
+                // Also disable fares involving this stop
+                if (existingStop.getFaresFrom() != null) {
+                    existingStop.getFaresFrom().forEach(f -> f.setEnabled(false));
+                }
+                if (existingStop.getFaresTo() != null) {
+                    existingStop.getFaresTo().forEach(f -> f.setEnabled(false));
+                }
+            }
+        }
+
 
         // Update or add stops
         for (RouteStopDTO stopDTO : incomingStops) {

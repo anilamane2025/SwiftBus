@@ -57,17 +57,17 @@ public class RouteStopPointServiceImpl implements RouteStopPointService {
 	public List<RouteDTO> getAllRoutesWithStopsAndPoints() {
 		List<Route> routes = dao.getAllRoutesWithStopsAndPoints();
 
-		 routes.forEach(route -> {
-		        if (route.getStops() != null) {
-		            route.getStops().removeIf(stop -> !stop.isEnabled()); 
-
-		            route.getStops().forEach(stop -> {
-		                if (stop.getStopPoints() != null) {
-		                    stop.getStopPoints().removeIf(sp -> !sp.isEnabled()); 
-		                }
-		            });
-		        }
-		    });
+//		 routes.forEach(route -> {
+//		        if (route.getStops() != null) {
+//		            route.getStops().removeIf(stop -> !stop.isEnabled()); 
+//
+//		            route.getStops().forEach(stop -> {
+//		                if (stop.getStopPoints() != null) {
+//		                    stop.getStopPoints().removeIf(sp -> !sp.isEnabled()); 
+//		                }
+//		            });
+//		        }
+//		    });
 		
 		return routes.stream()
                 .map(RouteMapper::toDTO)

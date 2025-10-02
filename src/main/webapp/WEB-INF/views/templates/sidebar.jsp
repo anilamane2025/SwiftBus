@@ -66,6 +66,9 @@
           <li>
             <a href="/admin/route-stop-point/list"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Routes Points</a>
           </li>
+          <li>
+            <a href="/admin/fare-segment/list"><i class="ri-circle-fill circle-icon text-secondary-main w-auto"></i> Fare Segment</a>
+          </li>
           
         </ul>
       </li>
