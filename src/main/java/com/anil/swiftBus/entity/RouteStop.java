@@ -49,6 +49,12 @@ public class RouteStop {
     
     @OneToMany(mappedBy = "routeStop", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<RouteStopPoint> stopPoints;
+    
+    @OneToMany(mappedBy = "fromRouteStop", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<FareSegment> faresFrom;
+    
+    @OneToMany(mappedBy = "toRouteStop", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<FareSegment> faresTo;
 
     @PrePersist
     protected void onCreate() {
@@ -152,6 +158,23 @@ public class RouteStop {
 	public void setStopPoints(List<RouteStopPoint> stopPoints) {
 		this.stopPoints = stopPoints;
 	}
-    
-    
+
+	public List<FareSegment> getFaresFrom() {
+		return faresFrom;
+	}
+
+	public void setFaresFrom(List<FareSegment> faresFrom) {
+		this.faresFrom = faresFrom;
+	}
+
+	public List<FareSegment> getFaresTo() {
+		return faresTo;
+	}
+
+	public void setFaresTo(List<FareSegment> faresTo) {
+		this.faresTo = faresTo;
+	}
+
+	
+	
 }

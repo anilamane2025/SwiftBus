@@ -32,7 +32,41 @@ public class RouteMapper {
 
         if (entity.getStops() != null) {
             List<RouteStopDTO> stopDTOs = entity.getStops().stream()
+            		.filter(RouteStop::isEnabled)
+                    .sorted((a, b) -> Integer.compare(a.getStopOrder(), b.getStopOrder()))  
                     .map(RouteStopMapper::toDTO)
+                    .collect(Collectors.toList());
+            dto.setStops(stopDTOs);
+        }
+        
+        return dto;
+    }
+    
+    public static RouteDTO toDTOWithFare(Route entity) {
+        if (entity == null) {
+            return null;
+        }
+        if (entity.getStops() != null) {
+            entity.getStops().forEach(stop -> {
+                if (stop.getStopPoints() != null) {
+                    stop.getStopPoints().size(); 
+                }
+            });
+            entity.getStops().size(); 
+        }
+        RouteDTO dto = new RouteDTO();
+        dto.setRouteId(entity.getRouteId());
+        dto.setRouteName(entity.getRouteName());
+        dto.setDistanceKm(entity.getDistanceKm());
+        dto.setCreatedAt(entity.getCreatedAt());
+        dto.setUpdatedAt(entity.getUpdatedAt());
+        dto.setEnabled(entity.isEnabled());
+
+        if (entity.getStops() != null) {
+        	List<RouteStopDTO> stopDTOs = entity.getStops().stream()
+        			.filter(RouteStop::isEnabled)
+                    .sorted((a, b) -> Integer.compare(a.getStopOrder(), b.getStopOrder()))  
+                    .map(RouteStopMapper::toDTOWithFare)
                     .collect(Collectors.toList());
             dto.setStops(stopDTOs);
         }

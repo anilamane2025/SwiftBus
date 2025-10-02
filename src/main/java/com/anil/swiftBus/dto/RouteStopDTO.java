@@ -44,6 +44,8 @@ public class RouteStopDTO {
     private LocalDateTime updatedAt;
     
     private List<RouteStopPointDTO> stopPoints;
+    
+    private List<FareSegmentDTO> fares;
 
     // Getters & Setters
     public Long getRouteStopId() {
@@ -151,6 +153,14 @@ public class RouteStopDTO {
 
 	public void setStopPoints(List<RouteStopPointDTO> stopPoints) {
 		this.stopPoints = stopPoints;
+	}
+
+	public List<FareSegmentDTO> getFares() {
+		return fares;
+	}
+
+	public void setFares(List<FareSegmentDTO> fares) {
+		this.fares = fares;
 	}
     
 }
