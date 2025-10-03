@@ -77,7 +77,12 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
-
+	
+	<bean id="smsService" class="com.anil.swiftBus.service.SmsService">
+	    <property name="authKey" value="471779AxRsywCer6U68def07fP1"/>
+	    <property name="senderId" value="SWIFTB"/>
+	</bean>	
+	
     <tx:annotation-driven transaction-manager="transactionManager"/>
     
     <!-- Add support for reading web resources: css, images, js, etc ... -->

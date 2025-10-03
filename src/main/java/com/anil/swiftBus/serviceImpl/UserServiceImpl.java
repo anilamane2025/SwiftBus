@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public Optional<User> findByUsername(String username) {
+    	System.out.println("In serviceimpl UserServiceImpl...... class");
         return userDAO.findByUsername(username);
     }
 
@@ -61,6 +62,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void save(RegistrationDTO dto) {
+		System.out.println("In save() method of UserServiceImpl class..");
 		Role passengerRole = roleDAO.findByUserType(UserType.PASSENGER);
 
         City city = cityDAO.getCityByCityId(dto.getCityId());

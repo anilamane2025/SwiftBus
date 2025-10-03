@@ -3,9 +3,9 @@ package com.anil.swiftBus.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,6 +47,7 @@ public class UserController {
 
 	@GetMapping("/sign-up")
     public String showSignUpForm(Model model) {
+		System.out.println("called /sign-up end point in the method of showSignUpForm..");
 		model.addAttribute("registrationDTO", new RegistrationDTO());
         model.addAttribute("states", cityService.getAllStates());
         model.addAttribute("cities", cityService.getAllCities());
@@ -56,8 +57,10 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("registrationDTO") RegistrationDTO registrationDTO, BindingResult result, Model model) {
+    public String registerUser(@Valid @ModelAttribute("registrationDTO") RegistrationDTO registrationDTO, BindingResult result, Model model,HttpSession session) {
+    	System.out.println("🔹 /register endpoint कॉल हुआ - registerUser method शुरू...");
         if (result.hasErrors()) {
+        	System.out.println("❌ Form validation में error है, signup पेज पर वापस भेजा जा रहा है...");
         	System.out.println("sadsd"+result);
         	List<City> cities = cityService.getAllCities();
             List<String> states = cityService.getAllStates();
@@ -69,6 +72,7 @@ public class UserController {
         }
 
         if (!registrationDTO.getPassword().equals(registrationDTO.getConfirmPassword())) {
+        	System.out.println("❌ Password और Confirm Password मैच नहीं कर रहे हैं...");
             model.addAttribute("passwordError", "Passwords do not match");
             model.addAttribute("states", cityService.getAllStates());
             model.addAttribute("cities", cityService.getAllCities());
@@ -76,14 +80,17 @@ public class UserController {
         }
         
         if (userService.usernameExists(registrationDTO.getUsername())) {
+        	System.out.println("❌ यह Username पहले से मौजूद है: " + registrationDTO.getUsername());
             result.rejectValue("username", "error.registrationDTO", "Username already exists");
         }
         
         if (userService.phoneNumberExists(registrationDTO.getPhoneNumber())) {
-                result.rejectValue("phoneNumber", "error.registrationDTO", "Phone number already exists");
+        	System.out.println("❌ यह Phone Number पहले से मौजूद है: " + registrationDTO.getPhoneNumber());
+            result.rejectValue("phoneNumber", "error.registrationDTO", "Phone number already exists");
         }
 
         if (result.hasErrors()) {
+        	System.out.println("❌ Error(s) मिलने की वजह से signup पेज पर वापस भेजा जा रहा है...");
             List<City> cities = cityService.getAllCities();
             List<String> states = cityService.getAllStates();
 
@@ -92,9 +99,25 @@ public class UserController {
 
             return "signup";
         }
+        
+        Boolean verified = (Boolean) session.getAttribute("OTP_VERIFIED");
+        String verifiedPhone = (String) session.getAttribute("OTP_PHONE");
 
+        if (verified == null || !verified || !registrationDTO.getPhoneNumber().equals(verifiedPhone)) {
+            System.out.println("❌ OTP verification missing/phone mismatch. Signup रोक दिया गया।");
+            model.addAttribute("otpError", "कृपया पहले मोबाइल OTP वेरिफ़ाई करें।");
+            model.addAttribute("states", cityService.getAllStates());
+            model.addAttribute("cities", cityService.getAllCities());
+            return "signup";
+        }
+        
+        System.out.println("✅ सभी validations पास हो गए, नया user save किया जा रहा है...");
         userService.save(registrationDTO);
-
+        
+        session.removeAttribute("OTP_VERIFIED");
+        session.removeAttribute("OTP_PHONE");
+        
+        System.out.println("➡️ User को login पेज पर redirect किया जा रहा है, registration successful flag के साथ...");
         return "redirect:/login?registered=true";
     }
     

@@ -18,6 +18,7 @@
 	    <intercept-url pattern="/assets/**" access="permitAll" />
 	
 		<intercept-url pattern="/cities/**" access="permitAll" />
+		<intercept-url pattern="/otp/**" access="permitAll" />  <!-- ← add this -->
 		
 	    <!-- Public pages -->
 	    <intercept-url pattern="/login" access="permitAll" />

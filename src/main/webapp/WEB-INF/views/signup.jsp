@@ -111,7 +111,7 @@
 								<form:errors path="username" cssClass="invalid-feedback" />
 							</div>
 						</div>
-						<!-- Phone -->
+						<!--<!-- Phone 
 						<div class="col-sm-6">
 							<div class="mb-20">
 								<label class="form-label">Phone Number</label>
@@ -119,7 +119,43 @@
 								<%-- <form:input path="phoneNumber" cssClass="form-control radius-8 ${phoneInvalid ? 'is-invalid' : ''}"/> --%>
 								<form:errors path="phoneNumber" cssClass="invalid-feedback" />
 							</div>
+						</div>-->
+						
+						<!-- Phone + OTP Controls -->
+						<div class="col-sm-6">
+						  <div class="mb-20">
+						    <label class="form-label">Phone Number</label>
+						
+						    <!-- Phone input -->
+						    <form:input path="phoneNumber" id="phoneNumber"
+						                cssClass="form-control radius-8" />
+						
+						    <!-- Validation errors from server-side -->
+						    <form:errors path="phoneNumber" cssClass="invalid-feedback" />
+						
+						    <!-- OTP action row -->
+						    <div class="d-flex gap-2 mt-2">
+						      <button type="button" id="btnSendOtp" class="btn btn-outline-primary">
+						        Send OTP
+						      </button>
+						
+						      <input type="text" id="otpInput" class="form-control" placeholder="Enter OTP"
+						             style="max-width: 180px;" />
+						
+						      <button type="button" id="btnVerifyOtp" class="btn btn-success">
+						        Verify OTP
+						      </button>
+						    </div>
+						
+						    <!-- OTP status / errors -->
+						    <div id="otpStatus" class="mt-2 text-sm"></div>
+						    <div id="otpCountdown" class="mt-1 text-secondary-light text-sm"></div>
+						
+						    <!-- Hidden: store verified state (for client-side guard) -->
+						    <input type="hidden" id="otpVerified" name="otpVerified" value="false" />
+						  </div>
 						</div>
+						
 						
 						<!-- Gender -->
 						<div class="mb-20">
@@ -193,6 +229,10 @@
 
 						<c:if test="${not empty passwordError}">
 							<div class="invalid-feedback">${passwordError}</div>
+						</c:if>						
+						
+						<c:if test="${not empty otpError}">
+  							<div class="invalid-feedback d-block">${otpError}</div>
 						</c:if>
 						
 					</div>
@@ -211,9 +251,14 @@
 						</div>
 					</div>
 					
-					<button type="submit" class="btn btn-primary radius-12 mt-32 w-100">
-						Sign Up</button>
-
+					<!-- <button type="submit" class="btn btn-primary radius-12 mt-32 w-100">
+						Sign Up</button> -->
+					
+					<button type="submit" id="btnSubmit"
+        				class="btn btn-primary radius-12 mt-32 w-100" disabled>
+  						Sign Up
+					</button>
+					
 
 					<div class="mt-32 text-center text-sm">
 						<p class="mb-0">
@@ -309,5 +354,135 @@
         }
     });
 </script>
+
+<script>
+  (function () {
+    // ====== Helpers: CSRF for AJAX ======
+    var csrfToken  = $('meta[name="_csrf"]').attr('content');
+    var csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+
+    function setCsrf(xhr) {
+      if (csrfToken && csrfHeader) {
+        xhr.setRequestHeader(csrfHeader, csrfToken);
+      }
+    }
+
+    // ====== UI Elements ======
+    var $phone        = $("#phoneNumber");
+    var $btnSendOtp   = $("#btnSendOtp");
+    var $otpInput     = $("#otpInput");
+    var $btnVerifyOtp = $("#btnVerifyOtp");
+    var $otpStatus    = $("#otpStatus");
+    var $otpCountdown = $("#otpCountdown");
+    var $otpVerified  = $("#otpVerified");
+    var $btnSubmit    = $("#btnSubmit");
+
+    // ====== State ======
+    var cooldownSec = 60;  // resend cooldown
+    var timerHandle = null;
+    var remaining   = 0;
+
+    // ====== Utilities ======
+    function setStatus(msg, ok) {
+      $otpStatus
+        .removeClass("text-danger text-success")
+        .addClass(ok ? "text-success" : "text-danger")
+        .text(msg);
+    }
+
+    function startCooldown() {
+      remaining = cooldownSec;
+      $btnSendOtp.prop("disabled", true);
+      tick();
+      timerHandle = setInterval(tick, 1000);
+    }
+
+    function tick() {
+      if (remaining <= 0) {
+        clearInterval(timerHandle);
+        $otpCountdown.text("");
+        $btnSendOtp.prop("disabled", false);
+        return;
+      }
+      $otpCountdown.text("You can resend OTP in " + remaining + "s");
+      remaining--;
+    }
+
+    function guardSubmit() {
+      var verified = ($otpVerified.val() === "true");
+      $btnSubmit.prop("disabled", !verified);
+    }
+
+    // ====== Events ======
+    $btnSendOtp.on("click", function () {
+      var phone = ($phone.val() || "").trim();
+
+      // Basic client-side phone check (India example; adjust as needed)
+      var phoneOk = /^[6-9]\d{9}$/.test(phone);
+      if (!phoneOk) {
+        setStatus("कृपया सही मोबाइल नंबर दर्ज करें (10 अंकों का).", false);
+        return;
+      }
+
+      $.ajax({
+        url: "<c:url value='/otp/send'/>",
+        type: "POST",
+        data: { phone: phone },
+        beforeSend: setCsrf,
+        success: function (res) {
+          setStatus("OTP भेज दिया गया है। (5 मिनट के लिए वैध)", true);
+          // reset verified state when re-sending
+          $otpVerified.val("false");
+          guardSubmit();
+          startCooldown();
+        },
+        error: function (xhr) {
+          setStatus("OTP भेजने में समस्या हुई, कृपया बाद में प्रयास करें.", false);
+        }
+      });
+    });
+
+    $btnVerifyOtp.on("click", function () {
+      var otp = ($otpInput.val() || "").trim();
+      if (!/^\d{4,8}$/.test(otp)) {
+        setStatus("कृपया सही OTP दर्ज करें.", false);
+        return;
+      }
+
+      $.ajax({
+        url: "<c:url value='/otp/verify'/>",
+        type: "POST",
+        data: { otp: otp },
+        beforeSend: setCsrf,
+        success: function (res) {
+          // Expect res like: {status:"VERIFIED"} from server
+          setStatus("मोबाइल नंबर सफलतापूर्वक वेरिफ़ाई हो गया ✅", true);
+          $otpVerified.val("true");
+          guardSubmit();
+        },
+        error: function (xhr) {
+          // Expect 400 with {status:"INVALID_OR_EXPIRED"}
+          setStatus("OTP गलत या समय-सीमा समाप्त। कृपया फिर से प्रयास करें।", false);
+          $otpVerified.val("false");
+          guardSubmit();
+        }
+      });
+    });
+
+    // On first load, ensure submit is guarded
+    guardSubmit();
+
+    // Safety: अगर user phone बदल दे तो verified फिर से false
+    $phone.on("input", function () {
+      $otpVerified.val("false");
+      guardSubmit();
+      $otpStatus.text("");
+      $otpCountdown.text("");
+    });
+
+  })();
+</script>
+
+
 </body>
 </html>

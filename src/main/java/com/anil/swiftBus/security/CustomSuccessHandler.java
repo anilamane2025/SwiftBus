@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CustomSuccessHandler implements AuthenticationSuccessHandler {
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
@@ -27,12 +26,15 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         for (GrantedAuthority authority : authorities) {
             switch (authority.getAuthority()) {
                 case "ROLE_ADMIN":
+                	System.out.println("After login it is in CustomSuccessHandler..to redirect at /admin/home page..");
                     redirectUrl = "/admin/home";
                     break;
                 case "ROLE_AGENT":
+                	System.out.println("After login it is in CustomSuccessHandler..to redirect at /agent/home page..");
                     redirectUrl = "/agent/home";
                     break;
                 case "ROLE_PASSENGER":
+                	System.out.println("After login it is in CustomSuccessHandler..to redirect at /passenger/home page..");
                     redirectUrl = "/passenger/home";
                     break;
             }
