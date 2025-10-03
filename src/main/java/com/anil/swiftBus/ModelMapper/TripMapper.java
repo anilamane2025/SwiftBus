@@ -1,9 +1,9 @@
 package com.anil.swiftBus.ModelMapper;
 
 import com.anil.swiftBus.dto.TripDTO;
-import com.anil.swiftBus.entity.Trip;
 import com.anil.swiftBus.entity.Bus;
 import com.anil.swiftBus.entity.Route;
+import com.anil.swiftBus.entity.Trip;
 import com.anil.swiftBus.enums.TripStatus;
 
 public class TripMapper {

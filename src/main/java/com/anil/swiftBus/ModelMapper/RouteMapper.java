@@ -1,12 +1,12 @@
 package com.anil.swiftBus.ModelMapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.anil.swiftBus.dto.RouteDTO;
 import com.anil.swiftBus.dto.RouteStopDTO;
 import com.anil.swiftBus.entity.Route;
 import com.anil.swiftBus.entity.RouteStop;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class RouteMapper {
 

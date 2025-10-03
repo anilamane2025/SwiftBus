@@ -1,13 +1,15 @@
 package com.anil.swiftBus.daoImpl;
 
-import com.anil.swiftBus.dao.RouteDAO;
-import com.anil.swiftBus.entity.Route;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.anil.swiftBus.dao.RouteDAO;
+import com.anil.swiftBus.entity.Route;
 
 @Repository
 @Transactional

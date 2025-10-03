@@ -1,5 +1,14 @@
 package com.anil.swiftBus.serviceImpl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.anil.swiftBus.ModelMapper.RouteMapper;
 import com.anil.swiftBus.ModelMapper.RouteStopPointMapper;
 import com.anil.swiftBus.dao.RouteStopPointDAO;
@@ -8,16 +17,7 @@ import com.anil.swiftBus.dto.RouteStopPointDTO;
 import com.anil.swiftBus.entity.Route;
 import com.anil.swiftBus.entity.RouteStop;
 import com.anil.swiftBus.entity.RouteStopPoint;
-import com.anil.swiftBus.enums.StopPointType;
 import com.anil.swiftBus.service.RouteStopPointService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @Service
 @Transactional

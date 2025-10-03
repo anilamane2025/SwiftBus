@@ -1,8 +1,11 @@
 package com.anil.swiftBus.dao;
 
-import com.anil.swiftBus.entity.Trip;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import com.anil.swiftBus.entity.Trip;
+import com.anil.swiftBus.enums.TripStatus;
 
 public interface TripDAO {
     Trip save(Trip trip);
@@ -12,5 +15,6 @@ public interface TripDAO {
     List<Trip> findByBusId(Long busId);
     List<Trip> findByRouteId(Long routeId);
     List<Trip> findByServiceDate(LocalDate date);
+	List<Trip> findByStatusAndArrivalDatetimeBefore(TripStatus scheduled, LocalDateTime now);
  
 }

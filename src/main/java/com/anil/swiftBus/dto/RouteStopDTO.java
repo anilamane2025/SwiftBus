@@ -1,13 +1,11 @@
 package com.anil.swiftBus.dto;
 
-import javax.persistence.Column;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.List;
 
 public class RouteStopDTO {
 

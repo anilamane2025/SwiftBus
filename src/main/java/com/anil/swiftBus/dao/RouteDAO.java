@@ -1,8 +1,8 @@
 package com.anil.swiftBus.dao;
 
-import com.anil.swiftBus.entity.Route;
-
 import java.util.List;
+
+import com.anil.swiftBus.entity.Route;
 
 public interface RouteDAO {
     Route findById(Long id);

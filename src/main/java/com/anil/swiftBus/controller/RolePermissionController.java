@@ -24,7 +24,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.anil.swiftBus.dto.RolePermissionDTO;
 import com.anil.swiftBus.entity.Permission;
 import com.anil.swiftBus.entity.Role;
-import com.anil.swiftBus.security.CustomUserDetailsService;
 import com.anil.swiftBus.service.PermissionService;
 import com.anil.swiftBus.service.RoleService;
 

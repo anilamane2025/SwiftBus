@@ -1,14 +1,15 @@
 package com.anil.swiftBus.daoImpl;
 
-import com.anil.swiftBus.dao.FareSegmentDAO;
-import com.anil.swiftBus.entity.FareSegment;
-import com.anil.swiftBus.entity.Route;
-
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.anil.swiftBus.dao.FareSegmentDAO;
+import com.anil.swiftBus.entity.FareSegment;
+import com.anil.swiftBus.entity.Route;
 
 @Repository
 public class FareSegmentDaoImpl implements FareSegmentDAO {

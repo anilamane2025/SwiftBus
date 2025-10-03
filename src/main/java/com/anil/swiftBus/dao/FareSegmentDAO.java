@@ -1,9 +1,9 @@
 package com.anil.swiftBus.dao;
 
+import java.util.List;
+
 import com.anil.swiftBus.entity.FareSegment;
 import com.anil.swiftBus.entity.Route;
-
-import java.util.List;
 
 public interface FareSegmentDAO {
     FareSegment save(FareSegment fareSegment);

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.anil.swiftBus.dao.BusDAO;
 import com.anil.swiftBus.entity.Bus;
 import com.anil.swiftBus.entity.BusSeat;
-import com.anil.swiftBus.entity.User;
 
 @Repository
 @Transactional

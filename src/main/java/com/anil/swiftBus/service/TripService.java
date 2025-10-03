@@ -1,8 +1,9 @@
 package com.anil.swiftBus.service;
 
-import com.anil.swiftBus.dto.TripDTO;
 import java.time.LocalDate;
 import java.util.List;
+
+import com.anil.swiftBus.dto.TripDTO;
 
 public interface TripService {
 
@@ -14,4 +15,5 @@ public interface TripService {
     List<TripDTO> getTripsByRouteId(Long routeId);
     List<TripDTO> getTripsByServiceDate(LocalDate date);
     void deleteTrip(Long tripId);
+	boolean isEditable(Long tripId);
 }

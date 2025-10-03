@@ -1,8 +1,9 @@
 package com.anil.swiftBus.dao;
 
+import java.util.List;
+
 import com.anil.swiftBus.entity.Route;
 import com.anil.swiftBus.entity.RouteStopPoint;
-import java.util.List;
 
 public interface RouteStopPointDAO {
     RouteStopPoint save(RouteStopPoint point);

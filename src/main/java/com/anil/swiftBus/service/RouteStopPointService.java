@@ -1,8 +1,9 @@
 package com.anil.swiftBus.service;
 
+import java.util.List;
+
 import com.anil.swiftBus.dto.RouteDTO;
 import com.anil.swiftBus.dto.RouteStopPointDTO;
-import java.util.List;
 
 public interface RouteStopPointService {
     void deletePoint(Long id);

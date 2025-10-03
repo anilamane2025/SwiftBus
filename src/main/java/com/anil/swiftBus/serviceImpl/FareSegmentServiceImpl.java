@@ -1,5 +1,16 @@
 package com.anil.swiftBus.serviceImpl;
 
+import java.math.BigDecimal;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.anil.swiftBus.ModelMapper.FareSegmentMapper;
 import com.anil.swiftBus.ModelMapper.RouteMapper;
 import com.anil.swiftBus.dao.FareSegmentDAO;
@@ -10,16 +21,6 @@ import com.anil.swiftBus.entity.FareSegment;
 import com.anil.swiftBus.entity.Route;
 import com.anil.swiftBus.entity.RouteStop;
 import com.anil.swiftBus.service.FareSegmentService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import java.math.BigDecimal;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional

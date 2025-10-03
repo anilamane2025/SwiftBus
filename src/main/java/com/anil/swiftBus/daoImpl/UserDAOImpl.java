@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import com.anil.swiftBus.dao.UserDAO;
 import com.anil.swiftBus.entity.AgentCommissionRule;
-import com.anil.swiftBus.entity.Permission;
 import com.anil.swiftBus.entity.User;
 import com.anil.swiftBus.enums.UserType;
 

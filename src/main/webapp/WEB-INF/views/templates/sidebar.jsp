@@ -69,6 +69,9 @@
           <li>
             <a href="/admin/fare-segment/list"><i class="ri-circle-fill circle-icon text-secondary-main w-auto"></i> Fare Segment</a>
           </li>
+          <li>
+            <a href="/admin/trips/list"><i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Trips</a>
+          </li>
           
         </ul>
       </li>

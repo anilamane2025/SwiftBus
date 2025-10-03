@@ -3,14 +3,30 @@ package com.anil.swiftBus.dto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class TripDTO {
 
     private Long tripId;
+    @NotNull(message = "Bus is required")
     private Long busId;
+    @NotNull(message = "Route is required")
     private Long routeId;
+    
     private String busName;
     private String routeName;
+    
+    @NotNull(message = "Service date is required")
+    @Future(message = "Service date must be in the future")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate serviceDate;
+    
+    @NotNull(message = "Departure datetime is required")
+    @Future(message = "Departure time must be in the future")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime departureDatetime;
     private LocalDateTime arrivalDatetime;
     private String status; // SCHEDULED, CANCELLED, COMPLETED

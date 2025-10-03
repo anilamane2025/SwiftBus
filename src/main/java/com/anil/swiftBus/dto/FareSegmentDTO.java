@@ -1,7 +1,10 @@
 package com.anil.swiftBus.dto;
 
-import javax.validation.constraints.*;
 import java.math.BigDecimal;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 
 public class FareSegmentDTO {
 

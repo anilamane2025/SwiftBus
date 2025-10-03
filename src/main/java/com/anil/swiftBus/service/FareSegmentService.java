@@ -1,9 +1,9 @@
 package com.anil.swiftBus.service;
 
+import java.util.List;
+
 import com.anil.swiftBus.dto.FareSegmentDTO;
 import com.anil.swiftBus.dto.RouteDTO;
-
-import java.util.List;
 
 public interface FareSegmentService {
     FareSegmentDTO save(FareSegmentDTO dto);

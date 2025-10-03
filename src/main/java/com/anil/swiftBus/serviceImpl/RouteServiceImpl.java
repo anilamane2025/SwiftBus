@@ -1,30 +1,29 @@
 package com.anil.swiftBus.serviceImpl;
 
-import com.anil.swiftBus.ModelMapper.RouteMapper;
-import com.anil.swiftBus.ModelMapper.RouteStopMapper;
-import com.anil.swiftBus.dto.RouteDTO;
-import com.anil.swiftBus.dto.RouteStopDTO;
-import com.anil.swiftBus.entity.City;
-import com.anil.swiftBus.entity.Route;
-import com.anil.swiftBus.entity.RouteStop;
-import com.anil.swiftBus.dao.RouteDAO;
-import com.anil.swiftBus.service.RouteService;
-import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
-
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import com.anil.swiftBus.ModelMapper.RouteMapper;
+import com.anil.swiftBus.ModelMapper.RouteStopMapper;
+import com.anil.swiftBus.dao.RouteDAO;
+import com.anil.swiftBus.dto.RouteDTO;
+import com.anil.swiftBus.dto.RouteStopDTO;
+import com.anil.swiftBus.entity.City;
+import com.anil.swiftBus.entity.Route;
+import com.anil.swiftBus.entity.RouteStop;
+import com.anil.swiftBus.service.RouteService;
 
 @Service
 @Transactional
