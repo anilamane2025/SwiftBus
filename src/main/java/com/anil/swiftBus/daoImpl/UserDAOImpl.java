@@ -22,6 +22,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public Optional<User> findByUsername(String username) {
+    	System.out.println("In the method of findByUsername() method of UserDAOImpl class.....");
         try {
         	User user = entityManager.createQuery(
                     "SELECT u FROM User u " +
@@ -61,6 +62,7 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public void save(User user) {
+		System.out.println("Saving the user details in database using persist() method of hibernate..");
 		entityManager.persist(user);
 		
 	}

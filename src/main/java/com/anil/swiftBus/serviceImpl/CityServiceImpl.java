@@ -26,6 +26,7 @@ public class CityServiceImpl implements CityService {
 
 	@Override
 	public List<String> getAllStates() {
+		System.out.println("in the CityServiceImpl class...");
 		return cityDao.getAllStates();
 	}
 

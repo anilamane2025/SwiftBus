@@ -18,7 +18,23 @@
     <context:component-scan base-package="com.anil.swiftBus"/>
     
     <!-- Add support for conversion, formatting and validation support -->
-	<mvc:annotation-driven/>
+	
+	<!-- testing -->
+	<!-- i18n / validation messages -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+	    <!-- looks for src/main/resources/messages.properties (and locale variants) -->
+	    <property name="basename" value="messages"/>
+	    <property name="defaultEncoding" value="UTF-8"/>
+	</bean>
+	
+	<!-- Hibernate Validator with our messageSource -->
+	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+	    <property name="validationMessageSource" ref="messageSource"/>
+	</bean>
+	
+	<!-- Make MVC use our validator -->
+	<mvc:annotation-driven validator="validator"/>
+
 
 	<!-- Define Spring MVC view resolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -61,7 +77,12 @@
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
-
+	
+	<bean id="smsService" class="com.anil.swiftBus.service.SmsService">
+	    <property name="authKey" value="471779AxRsywCer6U68def07fP1"/>
+	    <property name="senderId" value="SWIFTB"/>
+	</bean>	
+	
     <tx:annotation-driven transaction-manager="transactionManager"/>
     
     <!-- Add support for reading web resources: css, images, js, etc ... -->

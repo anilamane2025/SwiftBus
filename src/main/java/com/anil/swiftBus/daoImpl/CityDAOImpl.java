@@ -26,11 +26,13 @@ public class CityDAOImpl implements CityDAO {
 
     @Override
     public List<City> getAllCities() {
+    	System.out.println("in the getAllCities() method of CityDAOImpl class...");
         return entityManager.createQuery("SELECT c FROM City c", City.class).getResultList();
     }
 
 	@Override
 	public List<String> getAllStates() {
+		System.out.println("in the getAllStates() method of CityDAOImpl class...");
 		return entityManager.createQuery("SELECT DISTINCT cityState FROM City c", String.class).getResultList();
 	}
 
