@@ -27,5 +27,14 @@
   <link rel="stylesheet" href="<c:url value='/assets/css/lib/slick.css'/>">
   <!-- main css -->
   <link rel="stylesheet" href="<c:url value='/assets/css/style.css'/>">
-  
+  <style>
+.invalid-feedback {
+    display: block !important;   /* override Bootstrap hidden style */
+    width: 100%;
+    margin-top: .25rem;
+    font-size: .875em;
+    
+    color: var(--bs-form-invalid-color);
+}
+</style>
 </head>

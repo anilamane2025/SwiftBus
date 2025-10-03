@@ -10,7 +10,9 @@ import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import com.anil.swiftBus.dao.UserDAO;
+import com.anil.swiftBus.entity.AgentCommissionRule;
 import com.anil.swiftBus.entity.User;
+import com.anil.swiftBus.enums.UserType;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -74,13 +76,12 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public void delete(Long id) {
 		User user = entityManager.find(User.class, id);
-        if (user != null) {
-            //entityManager.remove(user);
-        	
-        	user.setEnabled(false);
-        	entityManager.merge(user);
+        if (user == null) {
+        	throw new IllegalArgumentException("User not found");
         }
-		
+        user.setEnabled(false);
+        entityManager.merge(user);
+        		
 	}
 
 	@Override
@@ -105,5 +106,68 @@ public class UserDAOImpl implements UserDAO {
                 .setParameter("phoneNumber", phoneNumber)
                 .getSingleResult();
         return count > 0;
+	}
+
+	@Override
+	public List<User> findAgents() {
+		try {
+			List<User> user = entityManager.createQuery(
+	            "SELECT u FROM User u LEFT JOIN FETCH u.role r LEFT JOIN FETCH u.city WHERE r.userType = :AGENT", 
+	            User.class
+	        )
+			.setParameter("AGENT", UserType.AGENT)
+	        .getResultList();
+
+	        return user;
+	    } catch (NoResultException e) {
+	        return null;
+	    }
+	}
+
+	@Override
+	public List<User> findPassangers() {
+		try {
+			List<User> user = entityManager.createQuery(
+	            "SELECT u FROM User u LEFT JOIN FETCH u.role r LEFT JOIN FETCH u.city WHERE r.userType = :PASSENGER", 
+	            User.class
+	        )
+			.setParameter("PASSENGER", UserType.PASSENGER)
+	        .getResultList();
+
+	        return user;
+	    } catch (NoResultException e) {
+	        return null;
+	    }
+	}
+
+	@Override
+	public void activate(Long id) {
+		User user = entityManager.find(User.class, id);
+        if (user == null) {
+        	throw new IllegalArgumentException("User not found");
+        }
+        user.setEnabled(true);
+        entityManager.merge(user);
+	}
+
+	@Override
+	public AgentCommissionRule findCommissionRuleByAgentId(Long agentId) {
+		try {
+            return entityManager.createQuery(
+                    "SELECT r FROM AgentCommissionRule r WHERE r.agent.id = :agentId", AgentCommissionRule.class)
+                    .setParameter("agentId", agentId)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+	}
+
+	@Override
+	public void saveCommissionRule(AgentCommissionRule rule) {
+		if (rule.getRuleId() == null) {
+            entityManager.persist(rule);
+        } else {
+            entityManager.merge(rule);
+        }
 	}
 }

@@ -164,6 +164,10 @@ public class UserController {
 
             model.addAttribute("cities", cities);
             model.addAttribute("states", states);
+            
+            ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO();
+            changePasswordDTO.setId(id);
+            model.addAttribute("changePasswordDTO", changePasswordDTO);
 
             return "view-profile";
         }
@@ -190,6 +194,10 @@ public class UserController {
 
             model.addAttribute("cities", cities);
             model.addAttribute("states", states);
+            
+            ChangePasswordDTO changePasswordDTO = new ChangePasswordDTO();
+            changePasswordDTO.setId(id);
+            model.addAttribute("changePasswordDTO", changePasswordDTO);
 
             return "view-profile";
         }
@@ -241,15 +249,5 @@ public class UserController {
         return "redirect:/profile/" + id + "?passwordChanged=true";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userService.delete(id);
-        return "redirect:/user/all";  // Redirect to list of users after deletion
-    }
 
-    @GetMapping("/all")
-    public String getAllUsers(Model model) {
-        model.addAttribute("users", userService.findAll());
-        return "user-list";  // View for displaying a list of users
-    }
 }

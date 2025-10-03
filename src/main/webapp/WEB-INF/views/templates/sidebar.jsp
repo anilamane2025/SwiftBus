@@ -34,13 +34,7 @@
         </a>
         <ul class="sidebar-submenu">
           <li>
-            <a href="users-list.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Agents List</a>
-          </li>
-          <li>
-            <a href="add-user.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Add Agents</a>
-          </li>
-          <li>
-            <a href="view-profile.html"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> View Profile</a>
+            <a href="/admin/agent-list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Agents List</a>
           </li>
         </ul>
       </li>
@@ -48,15 +42,37 @@
       <li class="dropdown">
         <a href="javascript:void(0)">
           <iconify-icon icon="flowbite:users-group-outline" class="menu-icon"></iconify-icon>
-          <span>Users</span> 
+          <span>Passengers</span> 
         </a>
         <ul class="sidebar-submenu">
           <li>
-            <a href="users-list.html"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Users List</a>
+            <a href="/admin/passenger-list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Passenger List</a>
+          </li>
+          
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="javascript:void(0)">
+          <iconify-icon icon="solar:bus-outline" class="menu-icon"></iconify-icon>
+          <span>Buses</span> 
+        </a>
+        <ul class="sidebar-submenu">
+          <li>
+            <a href="/admin/bus/bus-list"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Bus List</a>
           </li>
           <li>
-            <a href="view-profile.html"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> View Profile</a>
+            <a href="/admin/bus-routes/routes-list"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Routes</a>
           </li>
+          <li>
+            <a href="/admin/route-stop-point/list"><i class="ri-circle-fill circle-icon text-warning-main w-auto"></i> Routes Points</a>
+          </li>
+          <li>
+            <a href="/admin/fare-segment/list"><i class="ri-circle-fill circle-icon text-secondary-main w-auto"></i> Fare Segment</a>
+          </li>
+          <li>
+            <a href="/admin/trips/list"><i class="ri-circle-fill circle-icon text-success-main w-auto"></i> Trips</a>
+          </li>
+          
         </ul>
       </li>
       <li class="dropdown">

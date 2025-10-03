@@ -1,4 +1,5 @@
 package com.anil.swiftBus.serviceImpl;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,15 +9,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.anil.swiftBus.ModelMapper.AgentMapper;
 import com.anil.swiftBus.ModelMapper.UserMapper;
 import com.anil.swiftBus.dao.CityDAO;
 import com.anil.swiftBus.dao.RoleDAO;
 import com.anil.swiftBus.dao.UserDAO;
+import com.anil.swiftBus.dto.AgentDTO;
+import com.anil.swiftBus.dto.AgentRegisterDTO;
 import com.anil.swiftBus.dto.RegistrationDTO;
 import com.anil.swiftBus.dto.UserDTO;
+import com.anil.swiftBus.entity.AgentCommissionRule;
 import com.anil.swiftBus.entity.City;
 import com.anil.swiftBus.entity.Role;
 import com.anil.swiftBus.entity.User;
+import com.anil.swiftBus.enums.CommissionType;
 import com.anil.swiftBus.enums.UserType;
 import com.anil.swiftBus.service.UserService;
 
@@ -109,7 +115,7 @@ public class UserServiceImpl implements UserService {
 	public List<UserDTO> findAll() {
 		List<User> users = userDAO.findAll();
         return users.stream()
-                .map(UserMapper::toDTO) // Manually convert User to UserDTO
+                .map(UserMapper::toDTO)
                 .collect(Collectors.toList());
 	}
 
@@ -134,9 +140,136 @@ public class UserServiceImpl implements UserService {
         }
 	}
 
-//    @Override
-//    @Transactional
-//    public void saveUser(User user) {
-//        userDAO.save(user);
-//    }
+	@Override
+	public List<UserDTO> findAgent() {
+		List<User> users = userDAO.findAgents();
+        return users.stream()
+                .map(UserMapper::toDTO) 
+                .collect(Collectors.toList());
+	}
+
+	@Override
+	public List<UserDTO> findPassengers() {
+		List<User> users = userDAO.findPassangers();
+        return users.stream()
+                .map(UserMapper::toDTO) 
+                .collect(Collectors.toList());
+	}
+
+	@Override
+	public void deletePassenger(Long id) {
+		try {
+			userDAO.delete(id);
+        } catch (IllegalStateException e) {
+            // rethrow for controller
+            throw e;
+        }
+	}
+
+	@Override
+	public void activatePermission(Long id) {
+		try {
+            userDAO.activate(id);
+        } catch (IllegalStateException e) {
+            // rethrow for controller
+            throw e;
+        }
+	}
+
+	@Override
+	public Optional<AgentDTO> getAgentById(Long id) {
+		Optional<User> agent = userDAO.findById(id);
+        AgentCommissionRule rule = userDAO.findCommissionRuleByAgentId(id);
+        return Optional.ofNullable(AgentMapper.toDTO(agent.get(), rule));
+	}
+
+	@Override
+	public List<AgentDTO> getAllAgents() {
+		List<User> agents = userDAO.findAgents();
+        List<AgentDTO> agentDTOs = new ArrayList<>();
+
+        for (User agent : agents) {
+            AgentCommissionRule rule = userDAO.findCommissionRuleByAgentId(agent.getId());
+            AgentDTO dto = AgentMapper.toDTO(agent, rule);
+            agentDTOs.add(dto);
+        }
+
+        return agentDTOs;
+	}
+
+	@Override
+	public void updateAgent(Long id, AgentDTO agentDTO) {
+		Optional<User> userOptional = userDAO.findById(id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setFirstName(agentDTO.getFirstName());
+            user.setLastName(agentDTO.getLastName());
+            user.setUsername(agentDTO.getUsername());
+            user.setPhoneNumber(agentDTO.getPhoneNumber());
+            user.setGender(agentDTO.getGender());
+            user.setCity(cityDAO.getCityByCityId(agentDTO.getCityId()));
+
+            userDAO.update(user);
+            AgentCommissionRule rule = userDAO.findCommissionRuleByAgentId(id);
+    		if (rule == null) {
+                rule = new AgentCommissionRule();
+                rule.setAgent(user);
+            }
+            if (agentDTO.getCommissionType() != null) {
+                try {
+                    CommissionType type = CommissionType.valueOf(agentDTO.getCommissionType().toUpperCase());
+                    rule.setCommissionType(type);
+                } catch (IllegalArgumentException e) {
+                    throw new RuntimeException("Invalid commission type: " + agentDTO.getCommissionType());
+                }
+            }
+
+            rule.setCommissionValue(agentDTO.getCommissionValue());
+
+            userDAO.saveCommissionRule(rule);
+        } else {
+            throw new RuntimeException("Agent not found with id: " + id);
+        }
+	}
+
+	@Override
+	public void saveAgent(AgentRegisterDTO agentDTO) {
+		Role passengerRole = roleDAO.findByUserType(UserType.AGENT);
+
+        City city = cityDAO.getCityByCityId(agentDTO.getCityId());
+		
+		// map DTO -> Entity
+		User user = new User();
+		user.setUsername(agentDTO.getUsername());
+		user.setFirstName(agentDTO.getFirstName());
+		user.setLastName(agentDTO.getLastName());
+		user.setPassword(passwordEncoder.encode(agentDTO.getPassword()));
+		user.setGender(agentDTO.getGender());
+		user.setPhoneNumber(agentDTO.getPhoneNumber());
+		user.setCity(city);
+		user.setRole(passengerRole);
+		user.setEnabled(true);
+		
+		userDAO.save(user);
+		
+		
+		AgentCommissionRule rule = new AgentCommissionRule();
+        rule.setAgent(user);
+        
+        if (agentDTO.getCommissionType() != null) {
+            try {
+                CommissionType type = CommissionType.valueOf(agentDTO.getCommissionType().toUpperCase());
+                rule.setCommissionType(type);
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Invalid commission type: " + agentDTO.getCommissionType());
+            }
+        }
+
+        rule.setCommissionValue(agentDTO.getCommissionValue());
+
+        userDAO.saveCommissionRule(rule);
+	}
+
+	
+
 }

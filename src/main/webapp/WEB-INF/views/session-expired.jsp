@@ -61,10 +61,6 @@
 
 			
 				<div class="pt-48 pb-35 text-center">
-					<%-- <div class="mx-auto" style="max-width: 500px;">
-						<img src="<c:url value='/assets/images/forbidden-img.png' />"
-							alt="">
-					</div> --%>
 					<div class="max-w-700-px mx-auto mt-40">
 						<h3 class="mb-22 max-w-1000-px">Your session has expired or is invalid.</h3>
 						<a href="<c:url value='/' />"

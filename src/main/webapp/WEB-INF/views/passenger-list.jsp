@@ -1,0 +1,175 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec"
+	uri="http://www.springframework.org/security/tags"%>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<jsp:include page="templates/head.jsp" />
+<body>
+	<jsp:include page="templates/sidebar.jsp" />
+	<jsp:include page="templates/header.jsp" />
+
+	<div class="dashboard-main-body">
+		<div
+			class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
+			<h6 class="fw-semibold mb-0">Passenger</h6>
+			<ul class="d-flex align-items-center gap-2">
+				<li class="fw-medium">
+				
+				<sec:authorize access="hasRole('ADMIN')">
+       <a href="<c:url value='/admin/home' />"
+					class="d-flex align-items-center gap-1 hover-text-primary"> <iconify-icon
+							icon="solar:home-smile-angle-outline" class="icon text-lg"></iconify-icon>
+						Dashboard
+				</a>
+    </sec:authorize>
+				</li>
+				<li>-</li>
+    			<li class="fw-medium">Passenger</li>
+			</ul>
+		</div>
+
+		
+		<sec:authorize access="hasAuthority('PASSENGER_VIEW')">
+		<c:if test="${not empty success}">
+   <div class="alert alert-success bg-success-100 text-success-600 border-success-600 border-start-width-4-px border-top-0 border-end-0 border-bottom-0 px-24 py-13 mb-0 fw-semibold text-lg radius-4 d-flex align-items-center justify-content-between" role="alert">
+                        <div class="d-flex align-items-center gap-2">
+                            <iconify-icon icon="akar-icons:double-check" class="icon text-xl"></iconify-icon>
+                            ${success}
+                        </div>
+                        <button class="remove-button text-success-600 text-xxl line-height-1"> <iconify-icon icon="iconamoon:sign-times-light" class="icon"></iconify-icon></button>
+                    </div>
+</c:if>
+<c:if test="${not empty error}">
+   <div class="alert alert-danger bg-danger-100 text-danger-600 border-danger-600 border-start-width-4-px border-top-0 border-end-0 border-bottom-0 px-24 py-13 mb-0 fw-semibold text-lg radius-4 d-flex align-items-center justify-content-between" role="alert">
+                        <div class="d-flex align-items-center gap-2">
+                            <iconify-icon icon="mingcute:delete-2-line" class="icon text-xl"></iconify-icon>
+                            ${error}
+                        </div>
+                        <button class="remove-button text-danger-600 text-xxl line-height-1"> <iconify-icon icon="iconamoon:sign-times-light" class="icon"></iconify-icon></button>
+                    </div>
+</c:if>
+<div class="card basic-data-table">
+			<div class="card-header border-bottom bg-base d-flex align-items-center flex-wrap  justify-content-between">
+                <div></div>
+                <sec:authorize access="hasAuthority('PASSENGER_ADD')">
+                <a href="<c:url value='/admin/passenger/register'/>" type="button" class="btn btn-primary text-sm btn-sm d-flex align-items-center " >
+                    <iconify-icon icon="ic:baseline-plus" class="icon text-xl line-height-1"><template shadowrootmode="open"><style data-style="data-style">:host{display:inline-block;vertical-align:0}span,svg{display:block}</style><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M19 12.998h-6v6h-2v-6H5v-2h6v-6h2v6h6z"></path></svg></template></iconify-icon>
+                    Add New Passenger
+                </a>
+                </sec:authorize>
+            </div>
+      <div class="card-body">
+        <table class="table bordered-table mb-0" id="dataTable" data-page-length='10'>
+          <thead>
+            <tr>
+              <th scope="col" >Name</th>
+              <th scope="col">User name</th>
+              <th scope="col">Phone No</th>
+              <th scope="col">City</th>
+              <th scope="col">State</th>
+              <th scope="col">Status</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+          <c:forEach var="p" items="${passengers}">
+            <tr>
+              <td style="max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                <div class="d-flex align-items-center">
+                  <h6 class="text-md mb-0 fw-medium flex-grow-1" style="max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" >${p.firstName} ${p.lastName}</h6>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <h6 class="text-md mb-0 fw-medium flex-grow-1">${p.username}</h6>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <h6 class="text-md mb-0 fw-medium flex-grow-1">${p.phoneNumber}</h6>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <h6 class="text-md mb-0 fw-medium flex-grow-1">${p.cityName}</h6>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <h6 class="text-md mb-0 fw-medium flex-grow-1">${p.cityState}</h6>
+                </div>
+              </td>
+              <td>
+              <c:if test="${p.enabled}">
+              <span class="bg-success-focus text-success-600 border border-success-main px-20 py-4 radius-4 fw-medium text-sm">Active</span>
+              </c:if>
+              <c:if test="${!p.enabled}">
+              <span class="bg-danger-focus text-danger-600 border border-danger-main px-20 py-4 radius-4 fw-medium text-sm">Inactive</span>
+              </c:if>
+                                     
+              </td>
+              <td>
+  <div class="d-flex gap-2">
+    <sec:authorize access="hasAuthority('PASSENGER_EDIT')">
+      <a type="button"
+         href="<c:url value='/admin/passenger/edit/${p.id}'/>"
+         class="bg-info-focus bg-hover-info-200 text-info-600 fw-medium w-40-px h-40-px d-flex justify-content-center align-items-center rounded-circle"> 
+        <iconify-icon icon="majesticons:eye-line" class="icon text-xl"></iconify-icon>
+      </a>
+    </sec:authorize>	
+
+    <sec:authorize access="hasAuthority('PASSENGER_DELETE')">
+      <c:if test="${p.enabled}">
+        <a href="<c:url value='/admin/passenger/delete/${p.id}'/>"
+           onclick="return confirm('Are you sure you want to inactive this passenger?');"
+           class="w-40-px h-40-px bg-danger-focus text-danger-main rounded-circle d-inline-flex align-items-center justify-content-center">
+          <iconify-icon icon="mingcute:delete-2-line"></iconify-icon>
+        </a>
+      </c:if>
+      <c:if test="${!p.enabled}">
+        <a href="<c:url value='/admin/passenger/activate/${p.id}'/>"
+           onclick="return confirm('Are you sure you want to activate this passenger?');"
+           class="w-40-px h-40-px bg-success-focus text-success-main rounded-circle d-inline-flex align-items-center justify-content-center">
+          <iconify-icon icon="mingcute:check-2-line"></iconify-icon>
+        </a>
+      </c:if>
+    </sec:authorize>
+  </div>
+</td>
+
+            </tr>
+           
+          </c:forEach>
+          </tbody>
+        </table>
+      </div>
+    </div>
+			
+		</sec:authorize>
+
+		
+
+	</div>
+	
+    
+    
+
+	<jsp:include page="templates/footer.jsp" />
+	
+	<jsp:include page="templates/scripts.jsp" />
+	
+<script>    
+    $('.remove-button').on('click', function() {
+        $(this).closest('.alert').addClass('d-none')
+    }); 
+</script>
+<script>
+  let table = new DataTable('#dataTable');
+</script>
+
+	
+</body>
+</html>

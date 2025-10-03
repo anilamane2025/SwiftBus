@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security"
              xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:task="http://www.springframework.org/schema/task"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xmlns:security="http://www.springframework.org/schema/security"
              xsi:schemaLocation="
                http://www.springframework.org/schema/security
                http://www.springframework.org/schema/security/spring-security.xsd
                http://www.springframework.org/schema/beans
-               http://www.springframework.org/schema/beans/spring-beans.xsd">
+               http://www.springframework.org/schema/beans/spring-beans.xsd
+               http://www.springframework.org/schema/task 
+               http://www.springframework.org/schema/task/spring-task.xsd">
                
-     <security:global-method-security pre-post-annotations="enabled"/>
+     <security:global-method-security pre-post-annotations="enabled" proxy-target-class="true"/>
+     
+     <task:annotation-driven/>
 
     <http auto-config="true" use-expressions="true">
      <csrf disabled="true"/>
@@ -25,6 +30,12 @@
 	    <intercept-url pattern="/sign-up" access="permitAll" />
 	    <intercept-url pattern="/register" access="permitAll" />
 	    <intercept-url pattern="/" access="permitAll" />
+	    
+	    <intercept-url pattern="/api/stops/search" access="permitAll" />
+	    <intercept-url pattern="/booking" access="permitAll" />
+	    <intercept-url pattern="/search-trips" access="permitAll" />
+	    <intercept-url pattern="/admin/fare-segment/generate/**" access="hasAuthority('MANAGE_FARE_SEGMENT')" />
+	    
         <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
         <intercept-url pattern="/agent/**" access="hasRole('AGENT')" />
         <intercept-url pattern="/user/**" access="hasRole('PASSENGER')" />
@@ -32,18 +43,14 @@
 
     <!-- Example permission-based restriction -->
     <intercept-url pattern="/bills/add" access="hasAuthority('BILL_ADD')" />
-    <intercept-url pattern="/bills/delete" access="hasAuthority('BILL_DELETE')" />
-        
+    <intercept-url pattern="/bills/delete" access="hasAuthority('BILL_DELETE')" />  
         <form-login login-page="/login"
                     authentication-success-handler-ref="customSuccessHandler"
                     authentication-failure-url="/login?error=true" />
         <logout logout-success-url="/login?logout=true" invalidate-session="true"
                 delete-cookies="JSESSIONID" />
-        
-        <!-- Access Denied (403) handler -->
-    	<access-denied-handler error-page="/access-denied" />
-    	
-    	<session-management 
+                
+        <session-management 
             invalid-session-url="/sessionExpired"
             session-fixation-protection="migrateSession"
             session-authentication-error-url="/login?logout=true">
@@ -53,6 +60,10 @@
             error-if-maximum-exceeded="true"
             session-registry-ref="sessionRegistry"/>
     	</session-management>
+        
+        <!-- Access Denied (403) handler -->
+    	<access-denied-handler error-page="/access-denied" />
+    	
     </http>
     
 
