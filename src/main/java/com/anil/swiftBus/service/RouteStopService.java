@@ -10,4 +10,5 @@ public interface RouteStopService {
     RouteStopDTO create(RouteStopDTO stopDTO);
     RouteStopDTO update(RouteStopDTO stopDTO);
     void delete(Long id);
+	List<RouteStopDTO> searchEnabledStopsByNameOrCity(String q, int limit);
 }

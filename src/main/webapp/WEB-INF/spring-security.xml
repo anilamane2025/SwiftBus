@@ -30,6 +30,9 @@
 	    <intercept-url pattern="/register" access="permitAll" />
 	    <intercept-url pattern="/" access="permitAll" />
 	    
+	    <intercept-url pattern="/api/stops/search" access="permitAll" />
+	    <intercept-url pattern="/booking" access="permitAll" />
+	    <intercept-url pattern="/search-trips" access="permitAll" />
 	    <intercept-url pattern="/admin/fare-segment/generate/**" access="hasAuthority('MANAGE_FARE_SEGMENT')" />
 	    
         <intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />

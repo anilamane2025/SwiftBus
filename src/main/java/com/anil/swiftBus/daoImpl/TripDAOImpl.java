@@ -74,4 +74,15 @@ public class TripDAOImpl implements TripDAO {
 	        .getResultList();
 	}
 
+	@Override
+	public List<Trip> findTripsForJourney(Long fromStopId, Long toStopId, LocalDate date) {
+		// find trips on routeId and serviceDate with status = SCHEDULED
+		return em.createQuery("SELECT t FROM Trip t WHERE t.route.routeId = :rid AND t.serviceDate = :d AND t.status = :st", Trip.class)
+		    .setParameter("rid", "1")
+		    .setParameter("d", date)
+		    .setParameter("st", TripStatus.SCHEDULED)
+		    .getResultList();
+
+	}
+
 }

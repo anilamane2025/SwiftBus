@@ -8,4 +8,5 @@ public interface RouteStopDAO {
     RouteStop save(RouteStop stop);
     RouteStop update(RouteStop stop);
     void delete(Long id);
+	List<RouteStop> searchEnabledStopsByNameOrCity(String q, int limit);
 }

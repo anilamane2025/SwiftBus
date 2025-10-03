@@ -48,4 +48,14 @@ public class RouteStopDAOImpl implements RouteStopDAO {
             em.remove(stop);
         }
     }
+
+	@Override
+	public List<RouteStop> searchEnabledStopsByNameOrCity(String q, int limit) {
+		String jpql = "SELECT rs FROM RouteStop rs JOIN FETCH rs.city c WHERE rs.enabled = true AND " +
+                "(LOWER(rs.stopName) LIKE :q OR LOWER(c.cityName) LIKE :q)";
+		return em.createQuery(jpql, RouteStop.class)
+                .setParameter("q", "%" + q.toLowerCase() + "%")
+                .setMaxResults(limit)
+                .getResultList();
+	}
 }

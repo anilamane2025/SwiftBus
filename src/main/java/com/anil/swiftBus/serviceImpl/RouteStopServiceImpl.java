@@ -54,4 +54,11 @@ public class RouteStopServiceImpl implements RouteStopService {
     public void delete(Long id) {
         routeStopDAO.delete(id);
     }
+
+	@Override
+	public List<RouteStopDTO> searchEnabledStopsByNameOrCity(String q, int limit) {
+		
+  List<RouteStop> list = routeStopDAO.searchEnabledStopsByNameOrCity( q,  limit);
+  return list.stream().map(RouteStopMapper::toDTO).collect(Collectors.toList());
+	}
 }

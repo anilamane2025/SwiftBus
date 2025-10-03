@@ -16,4 +16,5 @@ public interface TripService {
     List<TripDTO> getTripsByServiceDate(LocalDate date);
     void deleteTrip(Long tripId);
 	boolean isEditable(Long tripId);
+	List<TripDTO> findTripsForJourney(Long fromStopId, Long toStopId, LocalDate date);
 }

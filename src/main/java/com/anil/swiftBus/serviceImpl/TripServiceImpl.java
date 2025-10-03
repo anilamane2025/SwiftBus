@@ -140,4 +140,12 @@ public class TripServiceImpl implements TripService {
 	       // return count == 0;
 		return true;
 	}
+
+	@Override
+	public List<TripDTO> findTripsForJourney(Long fromStopId, Long toStopId, LocalDate date) {
+		List<Trip> trips = tripDAO.findTripsForJourney(fromStopId, toStopId, date);
+		 return trips.stream()
+                 .map(TripMapper::toDTO)
+                 .collect(Collectors.toList());
+	}
 }
