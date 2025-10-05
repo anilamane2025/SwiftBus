@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<%@ taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
 <!-- meta tags and other links -->
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
@@ -76,6 +78,7 @@
 				</c:if>
             </div>
             <form action="<c:url value='/login' />" method="post">
+            <input type="hidden" name="redirect" value="${param.redirect}" />
                 <div class="icon-field mb-16">
                     <span class="icon top-50 translate-middle-y">
                         <iconify-icon icon="mage:email"></iconify-icon>
@@ -105,12 +108,27 @@
 
                 
                 <div class="mt-32 text-center text-sm">
-                    <p class="mb-0">Don’t have an account? <a href="<c:url value='/sign-up' />" class="text-primary-600 fw-semibold">Sign Up</a></p>
+                    <p class="mb-0">Don’t have an account? 
+					                    <c:if test="${param.redirect != null}">
+					    <a href="<c:url value='/sign-up?redirect=${param.redirect}' />" class="text-primary-600 fw-semibold">Sign Up</a>
+					</c:if>
+					<c:if test="${param.redirect == null}">
+					    <a href="<c:url value='/sign-up' />" class="text-primary-600 fw-semibold">Sign Up</a>
+					</c:if>
+					                    
+                    </p>
                 </div>
                 
             </form>
         </div>
     </div>
+    <nav class="d-flex align-items-right">
+			<a href="<c:url value='/' />" class="mx-3 fw-semibold">Home</a> <a
+				href="<c:url value='/booking' />" class="mx-3 fw-semibold">Book
+				Tickets</a> <a href="<c:url value='/about' />" class="mx-3 fw-semibold">About
+				Us</a> <a href="<c:url value='/contact' />" class="mx-3 fw-semibold">Contact</a>
+			
+		</nav>
 </section>
 
   <!-- jQuery library js -->

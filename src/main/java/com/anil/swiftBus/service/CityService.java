@@ -9,4 +9,5 @@ public interface CityService {
     List<City> getAllCities();
 	List<String> getAllStates();
 	List<City> getCitiesByState(String state);
+	List<City> getAllCitiesByName(String q, int i);
 }

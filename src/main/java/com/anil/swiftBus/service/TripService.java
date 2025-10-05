@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.anil.swiftBus.dto.TripDTO;
+import com.anil.swiftBus.dto.TripSearchDTO;
 
 public interface TripService {
 
@@ -16,5 +17,6 @@ public interface TripService {
     List<TripDTO> getTripsByServiceDate(LocalDate date);
     void deleteTrip(Long tripId);
 	boolean isEditable(Long tripId);
-	List<TripDTO> findTripsForJourney(Long fromStopId, Long toStopId, LocalDate date);
+	List<TripSearchDTO> findTripsForJourney(String from, String to, LocalDate date);
+	TripSearchDTO getTripByIdFareIdBusId(Long tripId, Long fareSegmentId, Long busId);
 }

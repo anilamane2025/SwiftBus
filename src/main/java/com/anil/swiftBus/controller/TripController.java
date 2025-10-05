@@ -1,5 +1,8 @@
 package com.anil.swiftBus.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -63,6 +66,17 @@ public class TripController {
         model.addAttribute("statuses", TripStatus.values());
         model.addAttribute("buses", busService.getAllBuses());
         model.addAttribute("routes", routeService.getAll());
+        LocalDateTime departureDateTime = trip.getDepartureDatetime();
+        LocalDateTime now = LocalDateTime.now();
+
+        // Check if the departure time is after now AND if it's more than 1 hour away
+        if(editable) {
+        if (departureDateTime.isAfter(now) && Duration.between(now, departureDateTime).toHours() > 2) {
+            editable = true;
+        } else {
+            editable = false;
+        }
+        }
         model.addAttribute("editable", editable);
         return "trips-add";
     }

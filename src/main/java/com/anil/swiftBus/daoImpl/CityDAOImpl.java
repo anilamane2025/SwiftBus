@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.anil.swiftBus.dao.CityDAO;
 import com.anil.swiftBus.entity.City;
+import com.anil.swiftBus.entity.RouteStop;
 
 @Repository
 public class CityDAOImpl implements CityDAO {
@@ -50,5 +51,14 @@ public class CityDAOImpl implements CityDAO {
 	            "SELECT c FROM City c WHERE c.cityId = :cityId", City.class)
 	            .setParameter("cityId", cityId)
 	            .getSingleResult();
+	}
+
+	@Override
+	public List<City> getAllCitiesByName(String q, int limit) {
+		String jpql = "SELECT c FROM City c WHERE LOWER(c.cityName) LIKE :q";
+		return entityManager.createQuery(jpql, City.class)
+                .setParameter("q", "%" + q.toLowerCase() + "%")
+                .setMaxResults(limit)
+                .getResultList();
 	}
 }

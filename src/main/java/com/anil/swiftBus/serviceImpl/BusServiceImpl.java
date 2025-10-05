@@ -15,8 +15,10 @@ import org.springframework.validation.BindingResult;
 
 import com.anil.swiftBus.ModelMapper.BusMapper;
 import com.anil.swiftBus.dao.BusDAO;
+import com.anil.swiftBus.dao.TripDAO;
 import com.anil.swiftBus.dto.BusDTO;
 import com.anil.swiftBus.dto.BusSeatDTO;
+import com.anil.swiftBus.dto.TripSearchDTO;
 import com.anil.swiftBus.entity.Bus;
 import com.anil.swiftBus.entity.BusSeat;
 import com.anil.swiftBus.exception.SeatValidationException;
@@ -27,6 +29,9 @@ public class BusServiceImpl implements BusService {
 
     @Autowired
     private BusDAO busDAO;
+    
+    @Autowired
+    private TripDAO tripDAO;
 
     @Override
     public void addBus(BusDTO busDTO) {
@@ -187,6 +192,17 @@ public class BusServiceImpl implements BusService {
 	@Override
 	public boolean existsByRegistrationNoAndNotId(String registrationNo, Long busId) {
 		return busDAO.existsByRegistrationNoAndNotId(registrationNo,busId);
+	}
+
+	@Override
+	public BusDTO getBusWithBookedStatus(BusDTO bus, Long trip) {
+		
+	    List<Long> bookedSeatIds = busDAO.getBookedSeatIds(trip);
+	    
+	    for (BusSeatDTO seat : bus.getSeats()) {
+	        seat.setBooked(bookedSeatIds.contains(seat.getBusSeatId()));
+	    }
+		return bus;
 	}
 
     

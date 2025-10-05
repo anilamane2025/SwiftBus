@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.anil.swiftBus.dao.BusDAO;
 import com.anil.swiftBus.entity.Bus;
 import com.anil.swiftBus.entity.BusSeat;
+import com.anil.swiftBus.enums.BookingStatus;
+import com.anil.swiftBus.enums.BookingTicketStatus;
 
 @Repository
 @Transactional
@@ -116,5 +118,22 @@ public class BusDAOImpl implements BusDAO {
 	@Override
 	public void commit() {
 		em.flush();
+	}
+
+	@Override
+	public List<Long> getBookedSeatIds(Long tripID) {
+		String ql = "SELECT bt.busSeat.busSeatId " +
+                "FROM BookingTicket bt " +
+                "JOIN bt.booking b " +
+                "WHERE b.trip.tripId = :tripId " +
+                "AND b.status = :bookingStatus " +
+                "AND bt.bookingTicketStatus = :ticketStatus";
+
+	    List<Long> bookedSeatIds = em.createQuery(ql, Long.class)
+	                                 .setParameter("tripId", tripID)
+	                                 .setParameter("bookingStatus", BookingStatus.CONFIRMED)
+	                                 .setParameter("ticketStatus", BookingTicketStatus.ACTIVE)
+	                                 .getResultList();
+	    return bookedSeatIds;
 	}
 }

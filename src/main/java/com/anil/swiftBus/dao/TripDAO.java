@@ -16,6 +16,7 @@ public interface TripDAO {
     List<Trip> findByRouteId(Long routeId);
     List<Trip> findByServiceDate(LocalDate date);
 	List<Trip> findByStatusAndArrivalDatetimeBefore(TripStatus scheduled, LocalDateTime now);
-	List<Trip> findTripsForJourney(Long fromStopId, Long toStopId, LocalDate date);
+	List<Trip> findTripsForJourney(String fromStopName, String toStopName, LocalDate date);
+	Trip findByIdRouteIdBusId(Long tripId, Long busId);
  
 }

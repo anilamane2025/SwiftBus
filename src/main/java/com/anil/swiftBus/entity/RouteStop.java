@@ -187,6 +187,15 @@ public class RouteStop {
 		this.faresTo = faresTo;
 	}
 
+	@Override
+	public String toString() {
+		return "RouteStop [routeStopId=" + routeStopId + ", route=" + route + ", city=" + city + ", stopName="
+				+ stopName + ", stopOrder=" + stopOrder + ", distanceFromOriginKm=" + distanceFromOriginKm
+				+ ", minutesFromStart=" + minutesFromStart + ", enabled=" + enabled + ", createdAt=" + createdAt
+				+ ", updatedAt=" + updatedAt + ", stopPoints=" + stopPoints + ", faresFrom=" + faresFrom + ", faresTo="
+				+ faresTo + "]";
+	}
+
 	
 	
 }

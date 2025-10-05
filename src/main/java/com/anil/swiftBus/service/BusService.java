@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.validation.BindingResult;
 
 import com.anil.swiftBus.dto.BusDTO;
+import com.anil.swiftBus.dto.TripSearchDTO;
 import com.anil.swiftBus.exception.SeatValidationException;
 
 
@@ -19,4 +20,5 @@ public interface BusService {
 	boolean existsByRegistrationNo(String registrationNo);
 	void updateBusWithSeats(BusDTO busDTO, BindingResult result) throws SeatValidationException;
 	boolean existsByRegistrationNoAndNotId(String registrationNo, Long busId);
+	BusDTO getBusWithBookedStatus(BusDTO bus, Long trip);
 }

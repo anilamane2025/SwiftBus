@@ -7,6 +7,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.anil.swiftBus.validation.ValidPhoneNumber;
+
 public class UserDTO {
 	private String id;
 
@@ -24,6 +26,7 @@ public class UserDTO {
 
     @Size(max = 10, message = "Phone number should be at most 10 digits.")
     @Pattern(regexp = "\\d{10}", message = "Phone number must be a valid 10-digit number.")
+    @ValidPhoneNumber(region = "IN", mobileOnly = true)
     private String phoneNumber;
 
     @NotBlank(message = "First name cannot be blank.")

@@ -11,6 +11,7 @@ public class BusSeatDTO {
     private int seatRow;
     private int seatCol;
     private String extraInfo;
+    private boolean booked = false;
 	public Long getBusSeatId() {
 		return busSeatId;
 	}
@@ -47,10 +48,12 @@ public class BusSeatDTO {
 	public void setExtraInfo(String extraInfo) {
 		this.extraInfo = extraInfo;
 	}
-	@Override
-	public String toString() {
-		return "BusSeatDTO [busSeatId=" + busSeatId + ", seatNumber=" + seatNumber + ", seatType=" + seatType
-				+ ", seatRow=" + seatRow + ", seatCol=" + seatCol + ", extraInfo=" + extraInfo + "]";
+	
+	public boolean isBooked() {
+		return booked;
+	}
+	public void setBooked(boolean booked) {
+		this.booked = booked;
 	}
 
     

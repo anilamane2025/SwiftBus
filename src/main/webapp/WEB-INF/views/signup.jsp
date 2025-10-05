@@ -84,6 +84,8 @@
 				
 				<form:form method="post" modelAttribute="registrationDTO"
 					action="/register">
+					<input type="hidden" name="redirect" value="${redirectUrl}" />
+
 					<div class="row">
 						<!-- First Name -->
 						<div class="col-sm-6">
@@ -104,7 +106,7 @@
 						</div>
 
 						<!-- Username -->
-						<div class="col-sm-6">
+						<div class="col-sm-12">
 							<div class="mb-20">
 								<label class="form-label">Username</label>
 								<form:input path="username" cssClass="form-control radius-8" />
@@ -122,7 +124,7 @@
 						</div>-->
 						
 						<!-- Phone + OTP Controls -->
-						<div class="col-sm-6">
+						<div class="col-sm-12">
 						  <div class="mb-20">
 						    <label class="form-label">Phone Number</label>
 						
@@ -135,14 +137,14 @@
 						
 						    <!-- OTP action row -->
 						    <div class="d-flex gap-2 mt-2">
-						      <button type="button" id="btnSendOtp" class="btn btn-outline-primary">
+						      <button type="button" id="btnSendOtp" class="btn btn-outline-primary radius-8">
 						        Send OTP
 						      </button>
 						
-						      <input type="text" id="otpInput" class="form-control" placeholder="Enter OTP"
+						      <input type="number" id="otpInput" class="form-control radius-8" placeholder="Enter OTP"
 						             style="max-width: 180px;" />
 						
-						      <button type="button" id="btnVerifyOtp" class="btn btn-success">
+						      <button type="button" id="btnVerifyOtp" class="btn btn-outline-primary radius-8">
 						        Verify OTP
 						      </button>
 						    </div>
@@ -271,6 +273,13 @@
 				
 				</div>
 		</div>
+		<nav class="d-flex align-items-right">
+			<a href="<c:url value='/' />" class="mx-3 fw-semibold">Home</a> <a
+				href="<c:url value='/booking' />" class="mx-3 fw-semibold">Book
+				Tickets</a> <a href="<c:url value='/about' />" class="mx-3 fw-semibold">About
+				Us</a> <a href="<c:url value='/contact' />" class="mx-3 fw-semibold">Contact</a>
+			
+		</nav>
 	</section>
 
 	<!-- jQuery library js -->

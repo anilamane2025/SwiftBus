@@ -1,11 +1,14 @@
 package com.anil.swiftBus.serviceImpl;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anil.swiftBus.ModelMapper.RouteStopMapper;
 import com.anil.swiftBus.dao.CityDAO;
 import com.anil.swiftBus.entity.City;
+import com.anil.swiftBus.entity.RouteStop;
 import com.anil.swiftBus.service.CityService;
 
 @Service
@@ -33,5 +36,11 @@ public class CityServiceImpl implements CityService {
 	@Override
 	public List<City> getCitiesByState(String state) {
 		return cityDao.getCitiesByState(state);
+	}
+
+	@Override
+	public List<City> getAllCitiesByName(String q, int limit) {
+		List<City> list = cityDao.getAllCitiesByName( q,  limit);
+		  return list;
 	}
 }

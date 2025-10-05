@@ -10,4 +10,5 @@ public interface CityDAO {
 	List<String> getAllStates();
 	List<City> getCitiesByState(String state);
 	City getCityByCityId(Long cityId);
+	List<City> getAllCitiesByName(String q, int limit);
 }

@@ -22,5 +22,6 @@ public interface BusDAO {
 
 	boolean existsSeatNumberOtherThanId(Long busId, String seatNumber, Long seatId);
 	Optional<BusSeat> findBySeatId(Long busSeatId);
+	List<Long> getBookedSeatIds(Long id);
 
 }

@@ -3,6 +3,7 @@ package com.anil.swiftBus.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.anil.swiftBus.dto.ChangePasswordDTO;
 import com.anil.swiftBus.dto.RegistrationDTO;
@@ -46,18 +48,20 @@ public class UserController {
 	}
 
 	@GetMapping("/sign-up")
-    public String showSignUpForm(Model model) {
+    public String showSignUpForm(@RequestParam(value = "redirect", required = false) String redirect,Model model) {
 		System.out.println("called /sign-up end point in the method of showSignUpForm..");
 		model.addAttribute("registrationDTO", new RegistrationDTO());
         model.addAttribute("states", cityService.getAllStates());
         model.addAttribute("cities", cityService.getAllCities());
-        
+        if (redirect != null) {
+            model.addAttribute("redirectUrl", redirect);
+        }
         return "signup";
     }
 
 
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute("registrationDTO") RegistrationDTO registrationDTO, BindingResult result, Model model,HttpSession session) {
+    public String registerUser(@Valid @ModelAttribute("registrationDTO") RegistrationDTO registrationDTO, BindingResult result, Model model,HttpSession session,@RequestParam(value = "redirect", required = false) String redirect,Authentication authentication) {
     	System.out.println("🔹 /register endpoint कॉल हुआ - registerUser method शुरू...");
         if (result.hasErrors()) {
         	System.out.println("❌ Form validation में error है, signup पेज पर वापस भेजा जा रहा है...");
@@ -116,6 +120,22 @@ public class UserController {
         
         session.removeAttribute("OTP_VERIFIED");
         session.removeAttribute("OTP_PHONE");
+        
+     // Auto login newly registered user
+        UserDetails updatedUserDetails = userDetailsService.loadUserByUsername(registrationDTO.getUsername());
+
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                updatedUserDetails,
+                registrationDTO.getPassword(),
+                updatedUserDetails.getAuthorities()
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+        
+        
+        if (redirect != null && !redirect.isEmpty()) {
+            return "redirect:" + redirect;
+        }
         
         System.out.println("➡️ User को login पेज पर redirect किया जा रहा है, registration successful flag के साथ...");
         return "redirect:/login?registered=true";

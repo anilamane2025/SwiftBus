@@ -19,9 +19,18 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
                                         HttpServletResponse response,
                                         Authentication authentication)
                                         throws IOException, ServletException {
+    	
+    	String redirectUrl = request.getParameter("redirect");
+
+        if (redirectUrl != null && !redirectUrl.isEmpty()) {
+        	System.out.println("After login it is in CustomSuccessHandler redirect at "+redirectUrl);
+            response.sendRedirect(redirectUrl);
+            return;
+        }
+        
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        String redirectUrl = "/login?error=true"; // fallback
+        redirectUrl = "/login?error=true"; // fallback
 
         for (GrantedAuthority authority : authorities) {
             switch (authority.getAuthority()) {

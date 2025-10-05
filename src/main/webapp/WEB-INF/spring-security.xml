@@ -30,7 +30,7 @@
 	    <intercept-url pattern="/sign-up" access="permitAll" />
 	    <intercept-url pattern="/register" access="permitAll" />
 	    <intercept-url pattern="/" access="permitAll" />
-	    
+	    <intercept-url pattern="/admin/api/**" access="permitAll" />
 	    <intercept-url pattern="/api/stops/search" access="permitAll" />
 	    <intercept-url pattern="/booking" access="permitAll" />
 	    <intercept-url pattern="/search-trips" access="permitAll" />

@@ -15,10 +15,12 @@
 		http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!-- Add support for component scanning -->
-    <context:component-scan base-package="com.anil.swiftBus"/>
+    <context:component-scan base-package="com.anil.swiftBus" />
     
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+	
     <!-- Add support for conversion, formatting and validation support -->
-	<mvc:annotation-driven/>
+	<mvc:annotation-driven validator="validator"/>
 
 	<!-- Define Spring MVC view resolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -62,7 +64,7 @@
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 	
-	<bean id="smsService" class="com.anil.swiftBus.service.SmsService">
+	<bean id="smsService" class="com.anil.swiftBus.serviceImpl.SmsServiceImpl">
 	    <property name="authKey" value="471779AxRsywCer6U68def07fP1"/>
 	    <property name="senderId" value="SWIFTB"/>
 	</bean>	

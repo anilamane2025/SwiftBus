@@ -32,7 +32,8 @@
     <c:if test="${not empty error}">
             <div class="alert alert-danger">${error}</div>
         </c:if>
-    
+    <c:choose>
+         <c:when test="${editable}">
     <div class="card">
         <div class="card-body">
             <form:form method="post" modelAttribute="trip" action="/admin/trips/save">
@@ -78,6 +79,9 @@
 
         </div>
     </div>
+    </c:when>
+         <c:otherwise>You can't edit trip because some booking already done.</c:otherwise>
+         </c:choose>
     </sec:authorize>
 </div>
 

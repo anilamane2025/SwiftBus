@@ -77,6 +77,22 @@
       </li>
       <li class="dropdown">
         <a href="javascript:void(0)">
+          <iconify-icon icon="solar:ticket-outline" class="menu-icon"></iconify-icon>
+          <span>Booking Tickets</span> 
+        </a>
+        <ul class="sidebar-submenu">
+          <li>
+            <a href="/booking/my-tickets"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> My Booking Tickets</a>
+          </li>
+          <li>
+            <a href="/admin/booking/booking-list"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i>Bus Booking List</a>
+          </li>
+          
+        </ul>
+      </li>
+      
+      <li class="dropdown">
+        <a href="javascript:void(0)">
           <i class="ri-user-settings-line text-xl me-14 d-flex w-auto"></i>
           <span>Role &amp; Access</span> 
         </a>
