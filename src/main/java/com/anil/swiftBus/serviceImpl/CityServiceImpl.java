@@ -1,14 +1,11 @@
 package com.anil.swiftBus.serviceImpl;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.anil.swiftBus.ModelMapper.RouteStopMapper;
 import com.anil.swiftBus.dao.CityDAO;
 import com.anil.swiftBus.entity.City;
-import com.anil.swiftBus.entity.RouteStop;
 import com.anil.swiftBus.service.CityService;
 
 @Service

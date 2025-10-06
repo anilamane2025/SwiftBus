@@ -1,7 +1,8 @@
 package com.anil.swiftBus.dao;
 
-import com.anil.swiftBus.entity.BookingTicket;
 import java.util.List;
+
+import com.anil.swiftBus.entity.BookingTicket;
 
 public interface BookingTicketDAO {
     BookingTicket save(BookingTicket ticket);

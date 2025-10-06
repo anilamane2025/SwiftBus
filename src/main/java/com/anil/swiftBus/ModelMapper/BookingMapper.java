@@ -1,9 +1,9 @@
 package com.anil.swiftBus.ModelMapper;
 
+import java.util.stream.Collectors;
+
 import com.anil.swiftBus.dto.BookingDTO;
 import com.anil.swiftBus.entity.Booking;
-
-import java.util.stream.Collectors;
 
 public class BookingMapper {
 

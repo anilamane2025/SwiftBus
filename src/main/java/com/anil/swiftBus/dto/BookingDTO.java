@@ -1,10 +1,11 @@
 package com.anil.swiftBus.dto;
 
-import com.anil.swiftBus.enums.BookingStatus;
-import com.anil.swiftBus.enums.PaymentStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.anil.swiftBus.enums.BookingStatus;
+import com.anil.swiftBus.enums.PaymentStatus;
 
 public class BookingDTO {
 

@@ -1,15 +1,20 @@
 package com.anil.swiftBus.serviceImpl;
 
-import com.anil.swiftBus.dao.AgentCommissionLedgerDAO;
-import com.anil.swiftBus.dto.AgentCommissionLedgerDTO;
-import com.anil.swiftBus.entity.AgentCommissionLedger;
-import com.anil.swiftBus.ModelMapper.AgentCommissionLedgerMapper;
-import com.anil.swiftBus.service.AgentCommissionLedgerService;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.anil.swiftBus.ModelMapper.AgentCommissionLedgerMapper;
+import com.anil.swiftBus.dao.AgentCommissionLedgerDAO;
+import com.anil.swiftBus.dto.AgentCommissionLedgerDTO;
+import com.anil.swiftBus.dto.AgentSummaryDTO;
+import com.anil.swiftBus.entity.AgentCommissionLedger;
+import com.anil.swiftBus.service.AgentCommissionLedgerService;
 
 @Service
 @Transactional
@@ -68,9 +73,31 @@ public class AgentCommissionLedgerServiceImpl implements AgentCommissionLedgerSe
     }
 
     @Override
-    public List<AgentCommissionLedgerDTO> findByBookingId(Long bookingId) {
-        return ledgerDAO.findByBookingId(bookingId).stream()
-                .map(AgentCommissionLedgerMapper::toDTO)
-                .collect(Collectors.toList());
+    public AgentCommissionLedgerDTO findByBookingId(Long bookingId) {
+        return AgentCommissionLedgerMapper.toDTO(ledgerDAO.findByBookingId(bookingId));
     }
+
+	@Override
+	public Long findByCommissionAgentId(long agentId) {
+		BigDecimal totalCommission = ledgerDAO.findByAgentId(agentId).stream()
+		        .filter(AgentCommissionLedger::isSettled) 
+		        .map(AgentCommissionLedger::getCommissionAmount) 
+		        .filter(Objects::nonNull) 
+		        .reduce(BigDecimal.ZERO, BigDecimal::add);
+		return totalCommission.longValue();
+	}
+
+	public List<AgentSummaryDTO> getAgentWiseSummaryByDate(LocalDate startDate, LocalDate endDate, Boolean settled) {
+	    List<Object[]> results = ledgerDAO.getAgentWiseSummaryByDate(startDate, endDate, settled);
+	    
+	    return results.stream().map(r -> {
+	        AgentSummaryDTO dto = new AgentSummaryDTO();
+	        dto.setAgentId((Long) r[0]);
+	        dto.setAgentName((String) r[1]);
+	        dto.setTotalBookings((Long) r[2]);
+	        dto.setTotalCommission((BigDecimal) r[3]);
+	        return dto;
+	    }).collect(Collectors.toList());
+	}
+
 }

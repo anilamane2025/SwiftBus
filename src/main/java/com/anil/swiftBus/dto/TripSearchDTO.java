@@ -2,8 +2,6 @@ package com.anil.swiftBus.dto;
 
 import java.util.List;
 
-import com.anil.swiftBus.entity.RouteStop;
-
 public class TripSearchDTO {
 	 private Long id;
 	    private Long busId;

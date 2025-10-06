@@ -1,7 +1,8 @@
 package com.anil.swiftBus.service;
 
-import com.anil.swiftBus.dto.PaymentDTO;
 import java.util.List;
+
+import com.anil.swiftBus.dto.PaymentDTO;
 
 public interface PaymentService {
     PaymentDTO save(PaymentDTO paymentDTO);

@@ -1,7 +1,8 @@
 package com.anil.swiftBus.dao;
 
-import com.anil.swiftBus.entity.Payment;
 import java.util.List;
+
+import com.anil.swiftBus.entity.Payment;
 
 public interface PaymentDAO {
     Payment save(Payment payment);

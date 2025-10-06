@@ -42,7 +42,7 @@ public class LoginController {
                         return null;
                     case "ROLE_PASSENGER":
                     	System.out.println("since I have logged in as USER redirecting to user home page");
-                        response.sendRedirect(request.getContextPath() + "/user/home");
+                        response.sendRedirect(request.getContextPath() + "/passenger/home");
                         return null;
                 }
             }
@@ -78,7 +78,7 @@ public class LoginController {
                         return null;
                     case "ROLE_PASSENGER":
                     	System.out.println("since I have logged in as USER redirecting to user home page");
-                        response.sendRedirect(request.getContextPath() + "/user/home");
+                        response.sendRedirect(request.getContextPath() + "/passenger/home");
                         return null;
                 }
             }
@@ -91,13 +91,6 @@ public class LoginController {
     public String accessDenied() {
 		System.out.println("returning acces denied..");
         return "access-denied"; 
-    }
-    
-   
-    
-    @GetMapping("/agent/home")
-    public String agentHome() {
-        return "home";
     }
 
 }

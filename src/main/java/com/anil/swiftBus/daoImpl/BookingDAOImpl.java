@@ -1,15 +1,19 @@
 package com.anil.swiftBus.daoImpl;
 
-import com.anil.swiftBus.dao.BookingDAO;
-import com.anil.swiftBus.entity.Booking;
-import com.anil.swiftBus.enums.BookingStatus;
-import com.anil.swiftBus.enums.BookingTicketStatus;
-
-import org.springframework.stereotype.Repository;
+import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.anil.swiftBus.dao.BookingDAO;
+import com.anil.swiftBus.dto.BookingTicketListDTO;
+import com.anil.swiftBus.entity.Booking;
+import com.anil.swiftBus.enums.BookingStatus;
+import com.anil.swiftBus.enums.BookingTicketStatus;
+import com.anil.swiftBus.enums.PaymentStatus;
 
 @Repository
 public class BookingDAOImpl implements BookingDAO {
@@ -64,7 +68,7 @@ public class BookingDAOImpl implements BookingDAO {
 
 	@Override
 	public int countBookedSeatsForTripWithRouteStop(Long tripId, Long fromStopId, Long toStopId) {
-		String ql = "SELECT COUNT(bt) " +
+		String ql = "SELECT COUNT(distinct bt.busSeat.busSeatId) " +
                 "FROM BookingTicket bt " +
                 "JOIN bt.booking b " +
                 "JOIN bt.fromRouteStop frs " +
@@ -88,4 +92,110 @@ public class BookingDAOImpl implements BookingDAO {
 		             .getSingleResult();
 		return count.intValue();
 	}
+
+	@Override
+	public Long findTotalIncome() {
+		String ql = "SELECT SUM(b.totalAmount) " +
+                "FROM Booking b " +
+                "WHERE b.status = :bookingStatus " +
+                "AND b.paymentStatus = :paymentStatus";
+		
+		BigDecimal count = em.createQuery(ql, BigDecimal.class)
+		             .setParameter("bookingStatus", BookingStatus.CONFIRMED)
+		             .setParameter("paymentStatus", PaymentStatus.PAID)
+		             .getSingleResult();
+		
+		return (count != null)?count.longValue():0;
+	}
+
+	@Override
+	public List<BookingTicketListDTO> getAllBookingTicketsForAdmin() {
+	    String ql = ""+
+	        "SELECT new com.anil.swiftBus.dto.BookingTicketListDTO( " +
+	            "b.bookingId, " +
+	            "bt.passengerName, " +
+	            "bt.passengerAge, " +
+	            "bt.passengerGender, " +
+	            "b.bookingTime, " +
+	            "b.totalAmount, " +
+	            "CASE WHEN b.agent IS NOT NULL THEN true ELSE false END, " +
+	            "b.status, " +
+	            "b.paymentStatus, " +
+	            "COALESCE(CONCAT(a.firstName, ' ', a.lastName), CONCAT(p.firstName, ' ', p.lastName))," +
+	            "COALESCE(a.phoneNumber, p.phoneNumber), " +
+	            "frs.stopName, " +
+	            "trs.stopName, " +
+	            "frsp.pointName, " +
+	            "trsp.pointName, " +
+	            "bus.busName, " +
+	            "bs.seatNumber, " + 
+	            "trip.serviceDate, " +
+	            "trip.status, " +
+	            "frs.minutesFromStart, " +
+	            "trs.minutesFromStart, " +
+	            "trip.departureDatetime " +
+	        ") " +
+	        "FROM BookingTicket bt " +
+	        "JOIN bt.booking b " +
+	        "JOIN b.trip trip " +
+	        "JOIN trip.bus bus " +
+	        "JOIN bt.busSeat bs " +
+	        "JOIN bt.fromRouteStop frs " +
+	        "JOIN bt.toRouteStop trs " +
+	        "JOIN bt.fromRouteStopPoint frsp " +
+	        "JOIN bt.toRouteStopPoint trsp " +
+	        "LEFT JOIN b.agent a " +
+	        "JOIN b.passenger p " +
+	        "ORDER BY b.bookingTime DESC ";
+
+	    return em.createQuery(ql, BookingTicketListDTO.class).getResultList();
+	}
+
+	@Override
+	public List<BookingTicketListDTO> getAllBookingTicketsByUser(Long userId) {
+		String ql = ""+
+		        "SELECT new com.anil.swiftBus.dto.BookingTicketListDTO( " +
+		            "b.bookingId, " +
+		            "bt.passengerName, " +
+		            "bt.passengerAge, " +
+		            "bt.passengerGender, " +
+		            "b.bookingTime, " +
+		            "b.totalAmount, " +
+		            "CASE WHEN b.agent IS NOT NULL THEN true ELSE false END, " +
+		            "b.status, " +
+		            "b.paymentStatus, " +
+		            "COALESCE(CONCAT(a.firstName, ' ', a.lastName), CONCAT(p.firstName, ' ', p.lastName))," +
+		            "COALESCE(a.phoneNumber, p.phoneNumber), " +
+		            "frs.stopName, " +
+		            "trs.stopName, " +
+		            "frsp.pointName, " +
+		            "trsp.pointName, " +
+		            "bus.busName, " +
+		            "bs.seatNumber, " + 
+		            "trip.serviceDate, " +
+		            "trip.status, " +
+		            "frs.minutesFromStart, " +
+		            "trs.minutesFromStart, " +
+		            "trip.departureDatetime " +
+		        ") " +
+		        "FROM BookingTicket bt " +
+		        "JOIN bt.booking b " +
+		        "JOIN b.trip trip " +
+		        "JOIN trip.bus bus " +
+		        "JOIN bt.busSeat bs " +
+		        "JOIN bt.fromRouteStop frs " +
+		        "JOIN bt.toRouteStop trs " +
+		        "JOIN bt.fromRouteStopPoint frsp " +
+		        "JOIN bt.toRouteStopPoint trsp " +
+		        "LEFT JOIN b.agent a " +
+		        "JOIN b.passenger p " +
+		        "WHERE p.id = :userId " +
+		        "ORDER BY b.bookingTime DESC ";
+
+		    return em.createQuery(ql, BookingTicketListDTO.class)
+		    		.setParameter("userId", userId)
+		    		.getResultList();
+	}
+
+	
 }

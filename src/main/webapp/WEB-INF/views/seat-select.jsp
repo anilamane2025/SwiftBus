@@ -578,11 +578,11 @@ body {
             </security:authorize>
             
             <security:authorize access="isAuthenticated()">
-					<h6>Passenger Details</h6>
+					<h6>Booking By :</h6>
 									<c:choose>
 								        <c:when test="${empty passenger}">
 											<div class="mb-2">
-												<p>Passenger Details not found!</p> Please login.
+												<p>Details not found!</p> Please login.
 											</div>
 									</form>
 									</c:when>
@@ -620,7 +620,7 @@ body {
 							    <input type="hidden" name="fromName" value="${trip.fromName}">
 							    <input type="hidden" name="toName" value="${trip.toName}">
 							    <input type="hidden" name="passengerId" value="${passenger.id}">
-							    <input type="hidden" name="agentId" value="">
+							    <input type="hidden" name="agentId" value="${passenger.roleName=='AGENT'?passenger.id:''}">
 							    
 							    <div class="mb-20">
 							        <label>Passenger Name:</label> 

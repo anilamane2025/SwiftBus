@@ -1,5 +1,18 @@
 package com.anil.swiftBus.serviceImpl;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.anil.swiftBus.ModelMapper.BookingMapper;
 import com.anil.swiftBus.dao.AgentCommissionLedgerDAO;
 import com.anil.swiftBus.dao.BookingDAO;
 import com.anil.swiftBus.dao.BookingTicketDAO;
@@ -11,7 +24,7 @@ import com.anil.swiftBus.dao.UserDAO;
 import com.anil.swiftBus.dto.BookingDTO;
 import com.anil.swiftBus.dto.BookingRequestDTO;
 import com.anil.swiftBus.dto.BookingResponseDTO;
-import com.anil.swiftBus.dto.BusSeatDTO;
+import com.anil.swiftBus.dto.BookingTicketListDTO;
 import com.anil.swiftBus.dto.TripSearchDTO;
 import com.anil.swiftBus.entity.AgentCommissionLedger;
 import com.anil.swiftBus.entity.AgentCommissionRule;
@@ -31,18 +44,7 @@ import com.anil.swiftBus.enums.CommissionType;
 import com.anil.swiftBus.enums.PaymentMethod;
 import com.anil.swiftBus.enums.PaymentStatus;
 import com.anil.swiftBus.enums.PaymentTxnStatus;
-import com.anil.swiftBus.ModelMapper.*;
 import com.anil.swiftBus.service.BookingService;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.temporal.TemporalField;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -139,7 +141,7 @@ public class BookingServiceImpl implements BookingService {
             booking.setAgent(agent);
             booking.setBookingTime(LocalDateTime.now());
             booking.setStatus(BookingStatus.CONFIRMED);
-            booking.setPaymentStatus(PaymentStatus.PENDING);
+            booking.setPaymentStatus(PaymentStatus.PAID);
             booking.setCreatedAt(LocalDateTime.now());
             booking.setUpdatedAt(LocalDateTime.now());
 
@@ -276,4 +278,83 @@ public class BookingServiceImpl implements BookingService {
         return response;
     }
 
+	@Override
+	public Long findTotalIncome() {
+		return bookingDAO.findTotalIncome();
+	}
+
+	@Override
+	public List<BookingTicketListDTO> getBookingTicketsForAdmin() {
+		List<BookingTicketListDTO> tickets = bookingDAO.getAllBookingTicketsForAdmin();
+
+	    // Optionally, group seat numbers for same booking
+	    Map<Long, BookingTicketListDTO> grouped = new LinkedHashMap<>();
+	    String seatNum ="";
+	    for (BookingTicketListDTO dto : tickets) {
+	        BookingTicketListDTO existing = grouped.get(dto.getBookingId());
+	        if (existing == null) {
+	            grouped.put(dto.getBookingId(), dto);
+	        } else {
+
+		        seatNum = dto.getSeatNumbers();
+	            dto = existing;
+	            dto.setSeatNumbers(dto.getSeatNumbers()+", "+ seatNum);
+	        }
+	        
+	    }
+
+	    List<BookingTicketListDTO> bookingTicketListDTOs = new ArrayList<>(grouped.values());
+	    bookingTicketListDTOs.sort((a, b) -> b.getBookingTime().compareTo(a.getBookingTime()));
+	    return bookingTicketListDTOs;
+	}
+
+	@Override
+	public List<BookingTicketListDTO> getBookingTicketsByUser(Long userId) {
+		List<BookingTicketListDTO> tickets = bookingDAO.getAllBookingTicketsByUser(userId);
+
+	    // Optionally, group seat numbers for same booking
+	    Map<Long, BookingTicketListDTO> grouped = new LinkedHashMap<>();
+	    String seatNum ="";
+	    for (BookingTicketListDTO dto : tickets) {
+	        BookingTicketListDTO existing = grouped.get(dto.getBookingId());
+	        if (existing == null) {
+	            grouped.put(dto.getBookingId(), dto);
+	        } else {
+
+		        seatNum = dto.getSeatNumbers();
+	            dto = existing;
+	            dto.setSeatNumbers(dto.getSeatNumbers()+", "+ seatNum);
+	        }
+	        
+	    }
+
+	    List<BookingTicketListDTO> bookingTicketListDTOs = new ArrayList<>(grouped.values());
+	    bookingTicketListDTOs.sort((a, b) -> b.getBookingTime().compareTo(a.getBookingTime()));
+	    return bookingTicketListDTOs;
+	}
+
+	@Override
+	public void cancelBooking(Long bookingId, String name) {
+		Booking booking = bookingDAO.findById(bookingId);
+		if(booking == null) {
+			throw new RuntimeException("Booking not found");
+		}
+
+		booking.setStatus(BookingStatus.CANCELLED);
+		
+		for (BookingTicket ticket : booking.getBookingTickets()) {
+	        ticket.setBookingTicketStatus(BookingTicketStatus.CANCELLED);
+	    }
+	    bookingDAO.update(booking);
+	    
+	    AgentCommissionLedger agentCommissionLedger= commissionDAO.findByBookingId(booking.getBookingId());
+		if(agentCommissionLedger != null) {
+			agentCommissionLedger.setSettled(false);
+			commissionDAO.update(agentCommissionLedger);
+		}
+		
+	    
+	}
+
+	
 }

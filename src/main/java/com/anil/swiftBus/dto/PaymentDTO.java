@@ -1,9 +1,10 @@
 package com.anil.swiftBus.dto;
 
-import com.anil.swiftBus.enums.PaymentMethod;
-import com.anil.swiftBus.enums.PaymentTxnStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import com.anil.swiftBus.enums.PaymentMethod;
+import com.anil.swiftBus.enums.PaymentTxnStatus;
 
 public class PaymentDTO {
 

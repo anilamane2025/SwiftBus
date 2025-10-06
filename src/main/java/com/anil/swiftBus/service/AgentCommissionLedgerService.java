@@ -1,7 +1,10 @@
 package com.anil.swiftBus.service;
 
-import com.anil.swiftBus.dto.AgentCommissionLedgerDTO;
+import java.time.LocalDate;
 import java.util.List;
+
+import com.anil.swiftBus.dto.AgentCommissionLedgerDTO;
+import com.anil.swiftBus.dto.AgentSummaryDTO;
 
 public interface AgentCommissionLedgerService {
     AgentCommissionLedgerDTO save(AgentCommissionLedgerDTO ledgerDTO);
@@ -10,5 +13,7 @@ public interface AgentCommissionLedgerService {
     AgentCommissionLedgerDTO findById(Long ledgerId);
     List<AgentCommissionLedgerDTO> findAll();
     List<AgentCommissionLedgerDTO> findByAgentId(Long agentId);
-    List<AgentCommissionLedgerDTO> findByBookingId(Long bookingId);
+    AgentCommissionLedgerDTO findByBookingId(Long bookingId);
+	Long findByCommissionAgentId(long long1);
+	public List<AgentSummaryDTO> getAgentWiseSummaryByDate(LocalDate startDate, LocalDate endDate, Boolean settled);
 }

@@ -1,16 +1,27 @@
 package com.anil.swiftBus.entity;
 
-import com.anil.swiftBus.enums.BookingStatus;
-import com.anil.swiftBus.enums.PaymentStatus;
-
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Table;
+
+import com.anil.swiftBus.enums.BookingStatus;
+import com.anil.swiftBus.enums.PaymentStatus;
 
 @Entity
 @Table(name = "bookings")
@@ -56,6 +67,9 @@ public class Booking {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
     
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private List<BookingTicket> bookingTickets;
+    
     @PrePersist
     protected void onCreate() {
         if (createdAt == null) {
@@ -64,7 +78,7 @@ public class Booking {
         updatedAt = createdAt;
         bookingTime = LocalDateTime.now();
         status = status != null ? status : BookingStatus.CONFIRMED;
-        paymentStatus = paymentStatus != null ? paymentStatus : PaymentStatus.PENDING;
+        paymentStatus = paymentStatus != null ? paymentStatus : PaymentStatus.PAID;
     }
 
     @PreUpdate
@@ -158,6 +172,14 @@ public class Booking {
 
 	public void setUpdatedAt(LocalDateTime updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public List<BookingTicket> getBookingTickets() {
+		return bookingTickets;
+	}
+
+	public void setBookingTickets(List<BookingTicket> bookingTickets) {
+		this.bookingTickets = bookingTickets;
 	}
     
     

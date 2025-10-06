@@ -1,8 +1,9 @@
 package com.anil.swiftBus.dto;
 
-import com.anil.swiftBus.enums.BookingTicketStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import com.anil.swiftBus.enums.BookingTicketStatus;
 
 public class BookingTicketDTO {
 

@@ -1,15 +1,16 @@
 package com.anil.swiftBus.serviceImpl;
 
-import com.anil.swiftBus.dao.BookingTicketDAO;
-import com.anil.swiftBus.dto.BookingTicketDTO;
-import com.anil.swiftBus.entity.BookingTicket;
-import com.anil.swiftBus.ModelMapper.BookingTicketMapper;
-import com.anil.swiftBus.service.BookingTicketService;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import com.anil.swiftBus.ModelMapper.BookingTicketMapper;
+import com.anil.swiftBus.dao.BookingTicketDAO;
+import com.anil.swiftBus.dto.BookingTicketDTO;
+import com.anil.swiftBus.entity.BookingTicket;
+import com.anil.swiftBus.service.BookingTicketService;
 
 @Service
 @Transactional

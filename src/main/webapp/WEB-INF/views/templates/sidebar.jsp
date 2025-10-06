@@ -105,7 +105,20 @@
           </li>
         </ul>
       </li>
-
+		<li class="dropdown">
+	        <a href="javascript:void(0)">
+	          <iconify-icon icon="solar:gallery-wide-linear" class="menu-icon"></iconify-icon>
+          <span>Reports</span> 
+	        </a>
+	        <ul class="sidebar-submenu">
+	          <li>
+	            <a href="/admin/booking/agent-commissions"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>Agent Commissions</a>
+	          </li>
+	          <li>
+	            <a href="/admin/booking/agent-commissions-summary"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i>Agent Wise Commissions Summary</a>
+	          </li>
+	        </ul>
+	      </li> 
 	</sec:authorize>
     
 
@@ -116,7 +129,29 @@
           <span>Dashboard</span>
         </a>
         
+      </li>
+      <li class="dropdown">
+        <a href="javascript:void(0)">
+          <iconify-icon icon="solar:ticket-outline" class="menu-icon"></iconify-icon>
+          <span>Booking Tickets</span> 
+        </a>
+        <ul class="sidebar-submenu">
+          <li>
+            <a href="/booking/my-tickets"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> My Booking Tickets</a>
+          </li>
+        </ul>
       </li> 
+      <li class="dropdown">
+	        <a href="javascript:void(0)">
+	          <iconify-icon icon="solar:gallery-wide-linear" class="menu-icon"></iconify-icon>
+          <span>Reports</span> 
+	        </a>
+	        <ul class="sidebar-submenu">
+	          <li>
+	            <a href="/agent/my-commissions"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> Commissions</a>
+	          </li>
+	        </ul>
+	      </li> 
     </sec:authorize>
 
     <sec:authorize access="hasRole('PASSENGER')">
@@ -125,15 +160,21 @@
           <iconify-icon icon="solar:home-smile-angle-outline" class="menu-icon"></iconify-icon>
           <span>Dashboard</span>
         </a>
-        
-      </li> 
+        </li>
+        <li class="dropdown">
+	        <a href="javascript:void(0)">
+	          <iconify-icon icon="solar:ticket-outline" class="menu-icon"></iconify-icon>
+	          <span>Booking Tickets</span> 
+	        </a>
+	        <ul class="sidebar-submenu">
+	          <li>
+	            <a href="/booking/my-tickets"><i class="ri-circle-fill circle-icon text-primary-600 w-auto"></i> My Booking Tickets</a>
+	          </li>
+	        </ul>
+	      </li> 
+       
 	</sec:authorize>
-      <li>
-        <a href="gallery.html">
-          <iconify-icon icon="solar:gallery-wide-linear" class="menu-icon"></iconify-icon>
-          <span>Reports</span> 
-        </a>
-      </li>
+      
       
       
     </ul>

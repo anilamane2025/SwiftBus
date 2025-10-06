@@ -1,7 +1,9 @@
 package com.anil.swiftBus.dao;
 
-import com.anil.swiftBus.entity.AgentCommissionLedger;
+import java.time.LocalDate;
 import java.util.List;
+
+import com.anil.swiftBus.entity.AgentCommissionLedger;
 
 public interface AgentCommissionLedgerDAO {
     AgentCommissionLedger save(AgentCommissionLedger ledger);
@@ -10,5 +12,6 @@ public interface AgentCommissionLedgerDAO {
     AgentCommissionLedger findById(Long ledgerId);
     List<AgentCommissionLedger> findAll();
     List<AgentCommissionLedger> findByAgentId(Long agentId);
-    List<AgentCommissionLedger> findByBookingId(Long bookingId);
+    AgentCommissionLedger findByBookingId(Long bookingId);
+	List<Object[]> getAgentWiseSummaryByDate(LocalDate startDate, LocalDate endDate, Boolean settled);
 }

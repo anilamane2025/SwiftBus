@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import com.anil.swiftBus.dao.CityDAO;
 import com.anil.swiftBus.entity.City;
-import com.anil.swiftBus.entity.RouteStop;
 
 @Repository
 public class CityDAOImpl implements CityDAO {

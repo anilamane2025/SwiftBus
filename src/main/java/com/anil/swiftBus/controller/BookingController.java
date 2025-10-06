@@ -1,16 +1,14 @@
 package com.anil.swiftBus.controller;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.anil.swiftBus.dto.BookingRequestDTO;
 import com.anil.swiftBus.dto.BookingResponseDTO;
+import com.anil.swiftBus.dto.BookingTicketListDTO;
 import com.anil.swiftBus.dto.BusDTO;
-import com.anil.swiftBus.dto.BusSeatDTO;
-import com.anil.swiftBus.dto.RouteStopPointDTO;
 import com.anil.swiftBus.dto.TripSearchDTO;
 import com.anil.swiftBus.dto.UserDTO;
 import com.anil.swiftBus.service.BookingService;
@@ -161,6 +159,31 @@ public class BookingController {
         model.addAttribute("bookingId", bookingId);
         return "booking"; 
     }
+    
+    @GetMapping("/my-tickets")
+    public String listTrips(Model model,Principal principal) {
+    	 String username = principal.getName(); 
+    	    UserDTO user = userService.findUserByUsername(username).orElseThrow(() -> new RuntimeException("User not found!")); 
+    	    
+    	    List<BookingTicketListDTO> bookingTicketListDTOs = bookingService.getBookingTicketsByUser(Long.parseLong(user.getId()));
+		model.addAttribute("bookings",bookingTicketListDTOs );
+        return "my-booking-list";
+    }
+    
+    @PostMapping("/cancel")
+    public String cancelBooking(@RequestParam("bookingId") Long bookingId,
+                                RedirectAttributes redirectAttributes,
+                                Principal principal) {
+        try {
+            bookingService.cancelBooking(bookingId, principal.getName());
+            redirectAttributes.addFlashAttribute("success", "Booking has been cancelled successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to cancel booking: " + e.getMessage());
+        }
+
+        return "redirect:/booking/my-tickets";
+    }
+
 
     
 }

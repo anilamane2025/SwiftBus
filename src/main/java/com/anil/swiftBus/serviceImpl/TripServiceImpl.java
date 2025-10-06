@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.anil.swiftBus.ModelMapper.BusMapper;
-import com.anil.swiftBus.ModelMapper.RouteMapper;
 import com.anil.swiftBus.ModelMapper.RouteStopMapper;
 import com.anil.swiftBus.ModelMapper.RouteStopPointMapper;
 import com.anil.swiftBus.ModelMapper.TripMapper;
@@ -22,12 +21,8 @@ import com.anil.swiftBus.dao.BusDAO;
 import com.anil.swiftBus.dao.FareSegmentDAO;
 import com.anil.swiftBus.dao.RouteDAO;
 import com.anil.swiftBus.dao.RouteStopDAO;
-import com.anil.swiftBus.dao.RouteStopPointDAO;
 import com.anil.swiftBus.dao.TripDAO;
 import com.anil.swiftBus.dto.BusDTO;
-import com.anil.swiftBus.dto.FareSegmentDTO;
-import com.anil.swiftBus.dto.RouteDTO;
-import com.anil.swiftBus.dto.RouteStopDTO;
 import com.anil.swiftBus.dto.RouteStopPointDTO;
 import com.anil.swiftBus.dto.TripDTO;
 import com.anil.swiftBus.dto.TripSearchDTO;
@@ -37,7 +32,6 @@ import com.anil.swiftBus.entity.Route;
 import com.anil.swiftBus.entity.RouteStop;
 import com.anil.swiftBus.entity.RouteStopPoint;
 import com.anil.swiftBus.entity.Trip;
-import com.anil.swiftBus.enums.StopPointType;
 import com.anil.swiftBus.enums.TripStatus;
 import com.anil.swiftBus.service.TripService;
 

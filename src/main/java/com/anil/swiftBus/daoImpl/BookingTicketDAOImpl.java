@@ -1,12 +1,14 @@
 package com.anil.swiftBus.daoImpl;
 
-import com.anil.swiftBus.dao.BookingTicketDAO;
-import com.anil.swiftBus.entity.BookingTicket;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.anil.swiftBus.dao.BookingTicketDAO;
+import com.anil.swiftBus.entity.BookingTicket;
 
 @Repository
 public class BookingTicketDAOImpl implements BookingTicketDAO {

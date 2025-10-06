@@ -1,12 +1,14 @@
 package com.anil.swiftBus.daoImpl;
 
-import com.anil.swiftBus.dao.PaymentDAO;
-import com.anil.swiftBus.entity.Payment;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.anil.swiftBus.dao.PaymentDAO;
+import com.anil.swiftBus.entity.Payment;
 
 @Repository
 public class PaymentDAOImpl implements PaymentDAO {

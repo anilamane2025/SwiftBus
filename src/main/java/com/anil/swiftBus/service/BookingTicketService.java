@@ -1,7 +1,8 @@
 package com.anil.swiftBus.service;
 
-import com.anil.swiftBus.dto.BookingTicketDTO;
 import java.util.List;
+
+import com.anil.swiftBus.dto.BookingTicketDTO;
 
 public interface BookingTicketService {
     BookingTicketDTO save(BookingTicketDTO ticketDTO);

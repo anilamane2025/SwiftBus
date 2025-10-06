@@ -1,11 +1,7 @@
 package com.anil.swiftBus.serviceImpl;
 
-import java.nio.charset.StandardCharsets;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriUtils;
 
 import com.anil.swiftBus.service.SmsService;
 

@@ -24,6 +24,7 @@ import com.anil.swiftBus.dto.ChangePasswordDTO;
 import com.anil.swiftBus.dto.RegistrationDTO;
 import com.anil.swiftBus.dto.UserDTO;
 import com.anil.swiftBus.entity.City;
+import com.anil.swiftBus.service.BookingService;
 import com.anil.swiftBus.service.CityService;
 import com.anil.swiftBus.service.UserService;
 
@@ -35,9 +36,18 @@ public class AdminController {
 	
 	@Autowired
 	private CityService cityService;
+	
+	@Autowired
+	private BookingService bookingService;
     
     @GetMapping({"/home","/home.html","","/"})
-    public String adminHome() {
+    public String adminHome(Model model) {
+    	Long totalActivePassenger = userService.findPassengers().stream().filter(UserDTO::isEnabled).count();
+    	Long totalActiveAgent = userService.findAgent().stream().filter(UserDTO::isEnabled).count();
+    	Long totalIncome = bookingService.findTotalIncome();
+    	model.addAttribute("totalActivePassenger", totalActivePassenger);
+    	model.addAttribute("totalActiveAgent", totalActiveAgent);
+    	model.addAttribute("totalIncome", totalIncome);
         return "home"; 
     }
     
