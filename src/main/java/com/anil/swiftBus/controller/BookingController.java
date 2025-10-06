@@ -122,7 +122,7 @@ public class BookingController {
         //Get bus seats
         BusDTO bus = busService.getBus(busId);
         
-        BusDTO busBooked = busService.getBusWithBookedStatus(bus,tripId);
+        BusDTO busBooked = busService.getBusWithBookedStatus(bus,trip);
 
         
         model.addAttribute("trip", trip);

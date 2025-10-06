@@ -21,6 +21,8 @@ public class TripSearchDTO {
 	    private Long fareSegmentId;
 	    private String fromName;
 	    private String toName;
+	    private Long fromRouteStopId;
+	    private Long toRouteStopId;
 	    
 		public Long getId() {
 			return id;
@@ -118,6 +120,18 @@ public class TripSearchDTO {
 		}
 		public void setToName(String toName) {
 			this.toName = toName;
+		}
+		public Long getFromRouteStopId() {
+			return fromRouteStopId;
+		}
+		public void setFromRouteStopId(Long fromRouteStopId) {
+			this.fromRouteStopId = fromRouteStopId;
+		}
+		public Long getToRouteStopId() {
+			return toRouteStopId;
+		}
+		public void setToRouteStopId(Long toRouteStopId) {
+			this.toRouteStopId = toRouteStopId;
 		}
 		
 	    

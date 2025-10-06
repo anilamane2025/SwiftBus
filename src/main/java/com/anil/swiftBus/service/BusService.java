@@ -20,5 +20,5 @@ public interface BusService {
 	boolean existsByRegistrationNo(String registrationNo);
 	void updateBusWithSeats(BusDTO busDTO, BindingResult result) throws SeatValidationException;
 	boolean existsByRegistrationNoAndNotId(String registrationNo, Long busId);
-	BusDTO getBusWithBookedStatus(BusDTO bus, Long trip);
+	BusDTO getBusWithBookedStatus(BusDTO bus, TripSearchDTO trip);
 }

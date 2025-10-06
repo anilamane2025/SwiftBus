@@ -3,6 +3,7 @@ package com.anil.swiftBus.dao;
 import java.util.List;
 import java.util.Optional;
 
+import com.anil.swiftBus.dto.TripSearchDTO;
 import com.anil.swiftBus.entity.Bus;
 import com.anil.swiftBus.entity.BusSeat;
 
@@ -22,6 +23,6 @@ public interface BusDAO {
 
 	boolean existsSeatNumberOtherThanId(Long busId, String seatNumber, Long seatId);
 	Optional<BusSeat> findBySeatId(Long busSeatId);
-	List<Long> getBookedSeatIds(Long id);
+	List<Long> getBookedSeatIds(TripSearchDTO trip);
 
 }

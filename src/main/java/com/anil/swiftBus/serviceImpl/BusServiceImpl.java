@@ -195,7 +195,7 @@ public class BusServiceImpl implements BusService {
 	}
 
 	@Override
-	public BusDTO getBusWithBookedStatus(BusDTO bus, Long trip) {
+	public BusDTO getBusWithBookedStatus(BusDTO bus, TripSearchDTO trip) {
 		
 	    List<Long> bookedSeatIds = busDAO.getBookedSeatIds(trip);
 	    

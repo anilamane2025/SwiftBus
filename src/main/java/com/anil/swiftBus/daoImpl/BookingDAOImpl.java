@@ -61,4 +61,31 @@ public class BookingDAOImpl implements BookingDAO {
 
 	    return count.intValue();
 	}
+
+	@Override
+	public int countBookedSeatsForTripWithRouteStop(Long tripId, Long fromStopId, Long toStopId) {
+		String ql = "SELECT COUNT(bt) " +
+                "FROM BookingTicket bt " +
+                "JOIN bt.booking b " +
+                "JOIN bt.fromRouteStop frs " +
+                "JOIN bt.toRouteStop trs " +
+                "JOIN RouteStop searchFrom ON searchFrom.routeStopId = :fromStopId " +
+                "JOIN RouteStop searchTo ON searchTo.routeStopId = :toStopId " +
+                "WHERE b.trip.tripId = :tripId " +
+                "AND b.status = :bookingStatus " +
+                "AND bt.bookingTicketStatus = :ticketStatus " +
+                "AND ( " +
+                "frs.stopOrder < searchTo.stopOrder " +
+                "AND trs.stopOrder > searchFrom.stopOrder " +
+                ")";
+
+		Long count = em.createQuery(ql, Long.class)
+		             .setParameter("tripId", tripId)
+		             .setParameter("fromStopId", fromStopId)
+		             .setParameter("toStopId", toStopId)
+		             .setParameter("bookingStatus", BookingStatus.CONFIRMED)
+		             .setParameter("ticketStatus", BookingTicketStatus.ACTIVE)
+		             .getSingleResult();
+		return count.intValue();
+	}
 }

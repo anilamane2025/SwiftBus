@@ -200,10 +200,16 @@ public class TripServiceImpl implements TripService {
             if (fromStop == null || toStop == null || fromStop.getStopOrder() >= toStop.getStopOrder())
                 continue;
 
+            
             // Convert to TripSearchDTO
             TripSearchDTO dto = new TripSearchDTO();
             dto.setId(t.getTripId());
             dto.setRouteName(route.getRouteName());
+            dto.setFromRouteStopId(fromStop.getRouteStopId());
+            dto.setToRouteStopId(toStop.getRouteStopId());
+            dto.setFromName(fromStop.getStopName());
+            dto.setToName(toStop.getStopName());
+            
             //dto.setRouteStops(stops.stream().filter(RouteStop::isEnabled).distinct().map(RouteStopMapper::toDTO).collect(Collectors.toList()));
             dto.setRouteStops(routeStopDAO.findByRouteId(route.getRouteId()).stream().filter(RouteStop::isEnabled).sorted(Comparator.comparingInt(RouteStop::getStopOrder)).map(RouteStopMapper::toDTO).collect(Collectors.toList()));
             // bus details
@@ -212,7 +218,7 @@ public class TripServiceImpl implements TripService {
                 dto.setBusName(bus.getBusName());
                 dto.setBusType(bus.getBusType());
                 dto.setBusId(bus.getBusId());
-                int booked = bookingDAO.countBookedSeatsForTrip(t.getTripId());
+                int booked = bookingDAO.countBookedSeatsForTripWithRouteStop(t.getTripId(),fromStop.getRouteStopId(),toStop.getRouteStopId());
                 dto.setAvailableSeats(Math.max(0, bus.getTotalSeats() - booked));
             }
 
@@ -266,22 +272,37 @@ public class TripServiceImpl implements TripService {
             // pickup/drop points
             List<RouteStopPointDTO> pickups = new ArrayList<>();
             List<RouteStopPointDTO> drops = new ArrayList<>();
-            for (RouteStop s : stops) {
-            	
-                if (s.getStopOrder() < fromStop.getStopOrder() || s.getStopOrder() > toStop.getStopOrder()) continue;
+//            for (RouteStop s : stops) {
+//            	
+//                if (s.getStopOrder() < fromStop.getStopOrder() || s.getStopOrder() > toStop.getStopOrder()) continue;
+//
+//                List<RouteStopPointDTO> points = s.getStopPoints().stream()
+//                        .filter(RouteStopPoint::isEnabled)
+//                        .distinct()
+//                        .map(RouteStopPointMapper::toDto)
+//                        .collect(Collectors.toList());
+//                
+//                System.out.println(s+"--------"+t.getTripId());
+//                System.out.println(points.toString());
+//
+//                pickups.addAll(points.stream().filter(p -> p.getPointType().equals("PICKUP")).collect(Collectors.toList()));
+//                drops.addAll(points.stream().filter(p -> p.getPointType().equals("DROP")).collect(Collectors.toList()));
+//            }
+            List<RouteStopPointDTO> pickupPoints = fromStop.getStopPoints().stream()
+                    .filter(RouteStopPoint::isEnabled)
+                    .distinct()
+                    .map(RouteStopPointMapper::toDto)
+                    .collect(Collectors.toList());
+            
+            List<RouteStopPointDTO> dropPoint = toStop.getStopPoints().stream()
+                    .filter(RouteStopPoint::isEnabled)
+                    .distinct()
+                    .map(RouteStopPointMapper::toDto)
+                    .collect(Collectors.toList());
+            
 
-                List<RouteStopPointDTO> points = s.getStopPoints().stream()
-                        .filter(RouteStopPoint::isEnabled)
-                        .distinct()
-                        .map(RouteStopPointMapper::toDto)
-                        .collect(Collectors.toList());
-                
-                System.out.println(s+"--------"+t.getTripId());
-                System.out.println(points.toString());
-
-                pickups.addAll(points.stream().filter(p -> p.getPointType().equals("PICKUP")).collect(Collectors.toList()));
-                drops.addAll(points.stream().filter(p -> p.getPointType().equals("DROP")).collect(Collectors.toList()));
-            }
+            pickups.addAll(pickupPoints.stream().filter(p -> p.getPointType().equals("PICKUP")).collect(Collectors.toList()));
+            drops.addAll(dropPoint.stream().filter(p -> p.getPointType().equals("DROP")).collect(Collectors.toList()));
 
             dto.setPickupPoints(pickups);
             dto.setDropPoints(drops);
@@ -301,12 +322,12 @@ public class TripServiceImpl implements TripService {
 		
 		// bus details
         BusDTO bus = busDAO.findById(busId).map(BusMapper::toDTO).orElseThrow(() -> new IllegalArgumentException("No Bus found!"));
+        int totalSeats = 0;
         if (bus != null) {
             dto.setBusName(bus.getBusName());
             dto.setBusType(bus.getBusType());
             dto.setBusId(bus.getBusId());
-            int booked = bookingDAO.countBookedSeatsForTrip(tripId);
-            dto.setAvailableSeats(Math.max(0, bus.getTotalSeats() - booked));
+            
         }
         
 		FareSegment fareSegment = fareSegmentDao.findById(fareSegmentId);
@@ -314,6 +335,9 @@ public class TripServiceImpl implements TripService {
 			throw new IllegalArgumentException("No fareSegment found!");
 		}
 		Trip trip = tripDAO.findByIdRouteIdBusId(tripId,busId);
+		if(trip == null) {
+			throw new IllegalArgumentException("No Trip found!");
+		}
 		
         dto.setId(trip.getTripId());
         dto.setRouteName(fareSegment.getRoute().getRouteName());
@@ -329,6 +353,12 @@ public class TripServiceImpl implements TripService {
         RouteStop toStop = fareSegment.getToRouteStop();
         dto.setFromName(fromStop.getStopName());
         dto.setToName(toStop.getStopName());
+        dto.setFromRouteStopId(fromStop.getRouteStopId());
+        dto.setToRouteStopId(toStop.getRouteStopId());
+        
+        int booked = bookingDAO.countBookedSeatsForTripWithRouteStop(trip.getTripId(),fromStop.getRouteStopId(),toStop.getRouteStopId());
+        dto.setAvailableSeats(Math.max(0, bus.getTotalSeats() - booked));
+        
         if (routeDep != null) {
              depTime = routeDep;
             if (fromStop.getMinutesFromStart() != null) {
@@ -364,21 +394,21 @@ public class TripServiceImpl implements TripService {
         List<RouteStopPointDTO> pickups = new ArrayList<>();
         List<RouteStopPointDTO> drops = new ArrayList<>();
        
-            List<RouteStopPointDTO> points = fromStop.getStopPoints().stream()
+            List<RouteStopPointDTO> pickupPoints = fromStop.getStopPoints().stream()
                     .filter(RouteStopPoint::isEnabled)
                     .distinct()
                     .map(RouteStopPointMapper::toDto)
                     .collect(Collectors.toList());
             
-            List<RouteStopPointDTO> dropss = toStop.getStopPoints().stream()
+            List<RouteStopPointDTO> dropPoint = toStop.getStopPoints().stream()
                     .filter(RouteStopPoint::isEnabled)
                     .distinct()
                     .map(RouteStopPointMapper::toDto)
                     .collect(Collectors.toList());
             
 
-            pickups.addAll(points.stream().filter(p -> p.getPointType().equals("PICKUP")).collect(Collectors.toList()));
-            drops.addAll(dropss.stream().filter(p -> p.getPointType().equals("DROP")).collect(Collectors.toList()));
+            pickups.addAll(pickupPoints.stream().filter(p -> p.getPointType().equals("PICKUP")).collect(Collectors.toList()));
+            drops.addAll(dropPoint.stream().filter(p -> p.getPointType().equals("DROP")).collect(Collectors.toList()));
         
 
         dto.setPickupPoints(pickups);

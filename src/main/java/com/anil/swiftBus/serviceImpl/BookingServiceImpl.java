@@ -12,6 +12,7 @@ import com.anil.swiftBus.dto.BookingDTO;
 import com.anil.swiftBus.dto.BookingRequestDTO;
 import com.anil.swiftBus.dto.BookingResponseDTO;
 import com.anil.swiftBus.dto.BusSeatDTO;
+import com.anil.swiftBus.dto.TripSearchDTO;
 import com.anil.swiftBus.entity.AgentCommissionLedger;
 import com.anil.swiftBus.entity.AgentCommissionRule;
 import com.anil.swiftBus.entity.Booking;
@@ -192,8 +193,12 @@ public class BookingServiceImpl implements BookingService {
                         .findFirst()
                         .orElseThrow(() -> new RuntimeException("Seat not found with ID: " + seatId));
 
+                TripSearchDTO tripSearchDTO = new TripSearchDTO();
+                tripSearchDTO.setId(request.getTripId());
+                tripSearchDTO.setFromRouteStopId(fromStop.getRouteStopId());
+                tripSearchDTO.setToRouteStopId(toStop.getRouteStopId());
                 // prevent double booking:
-                List<Long> bookedSeatIds = busDAO.getBookedSeatIds(request.getTripId());
+                List<Long> bookedSeatIds = busDAO.getBookedSeatIds(tripSearchDTO);
                 if (bookedSeatIds.contains(seat.getBusSeatId())) throw new RuntimeException("Seat already booked: " + seat.getSeatNumber());
 
                 BookingTicket ticket = new BookingTicket();

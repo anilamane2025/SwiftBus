@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.anil.swiftBus.dao.BusDAO;
+import com.anil.swiftBus.dto.TripSearchDTO;
 import com.anil.swiftBus.entity.Bus;
 import com.anil.swiftBus.entity.BusSeat;
 import com.anil.swiftBus.enums.BookingStatus;
@@ -121,19 +122,31 @@ public class BusDAOImpl implements BusDAO {
 	}
 
 	@Override
-	public List<Long> getBookedSeatIds(Long tripID) {
+	public List<Long> getBookedSeatIds(TripSearchDTO trip) {
 		String ql = "SELECT bt.busSeat.busSeatId " +
                 "FROM BookingTicket bt " +
                 "JOIN bt.booking b " +
+                "JOIN bt.fromRouteStop frs " +
+                "JOIN bt.toRouteStop trs " +
+                "JOIN RouteStop searchFrom ON searchFrom.routeStopId = :fromStopId " +
+                "JOIN RouteStop searchTo ON searchTo.routeStopId = :toStopId " +
                 "WHERE b.trip.tripId = :tripId " +
                 "AND b.status = :bookingStatus " +
-                "AND bt.bookingTicketStatus = :ticketStatus";
-
-	    List<Long> bookedSeatIds = em.createQuery(ql, Long.class)
-	                                 .setParameter("tripId", tripID)
-	                                 .setParameter("bookingStatus", BookingStatus.CONFIRMED)
-	                                 .setParameter("ticketStatus", BookingTicketStatus.ACTIVE)
-	                                 .getResultList();
-	    return bookedSeatIds;
+                "AND bt.bookingTicketStatus = :ticketStatus " +
+                "AND ( " +
+                "frs.stopOrder < searchTo.stopOrder " +
+                "AND trs.stopOrder > searchFrom.stopOrder " +
+                ")";
+		
+		    return em.createQuery(ql, Long.class)
+		             .setParameter("tripId", trip.getId())
+		             .setParameter("fromStopId", trip.getFromRouteStopId())
+		             .setParameter("toStopId", trip.getToRouteStopId())
+		             .setParameter("bookingStatus", BookingStatus.CONFIRMED)
+		             .setParameter("ticketStatus", BookingTicketStatus.ACTIVE)
+		             .getResultList();
 	}
+	
+	
+
 }

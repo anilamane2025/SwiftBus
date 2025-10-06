@@ -10,4 +10,5 @@ public interface BookingDAO {
     Booking findById(Long bookingId);
     List<Booking> findAll();
 	int countBookedSeatsForTrip(Long tripId);
+	int countBookedSeatsForTripWithRouteStop(Long tripId, Long routeStopId, Long routeStopId2);
 }
