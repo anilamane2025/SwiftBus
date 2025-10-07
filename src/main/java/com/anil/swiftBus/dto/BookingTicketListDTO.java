@@ -38,6 +38,7 @@ public class BookingTicketListDTO {
     private String fromDepartureTime;
     private String toArrivalTime;
     private String duration;
+    private String registrationNo;
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, hh:mm a");
     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("hh:mm a");
     LocalDateTime depTime=null , arrTime=null;
@@ -49,7 +50,7 @@ public class BookingTicketListDTO {
             LocalDateTime bookingTime, BigDecimal totalAmount, boolean bookedByAgent,
             BookingStatus bookingStatus, PaymentStatus paymentStatus, String bookedByName, String bookedByPhone,
             String fromStopName, String toStopName, String fromStopPointName, String toStopPointName,
-            String busName, String seatNumber, LocalDate serviceDate, TripStatus tripStatus, Integer minutesFromStart, Integer toMinutesFromStart, LocalDateTime departureDatetime ) {
+            String busName,String registrationNo, String seatNumber, LocalDate serviceDate, TripStatus tripStatus, Integer minutesFromStart, Integer toMinutesFromStart, LocalDateTime departureDatetime ) {
 			
     		this.bookingId = bookingId;
 			this.passengerName = passengerName;
@@ -92,6 +93,15 @@ public class BookingTicketListDTO {
 				Duration d = Duration.between(depTime, arrTime);
 				this.duration = (String.format("%dh %02dm", d.toHours(), d.minusHours(d.toHours()).toMinutes()));
 			} 
+			
+			LocalDateTime now = LocalDateTime.now();
+		    LocalDateTime showTime = depTime.minusHours(4);
+
+		    if (now.isAfter(showTime)) {
+		        this.registrationNo = registrationNo;
+		    } else {
+		        this.registrationNo = "Will be available 4 hours before departure.";
+		    }
 			
 	}
 
@@ -266,6 +276,16 @@ public class BookingTicketListDTO {
 
 	public void setSeatNumber(String seatNumber) {
 		this.seatNumber = seatNumber;
+	}
+
+
+	public String getRegistrationNo() {
+		return registrationNo;
+	}
+
+
+	public void setRegistrationNo(String registrationNo) {
+		this.registrationNo = registrationNo;
 	}
 
     

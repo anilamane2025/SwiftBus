@@ -202,6 +202,7 @@
                 <tr><th>From → To</th><td id="fromTo"></td></tr>
                 <tr><th>Pickup → Drop</th><td id="stopPointfromTo"></td></tr>
                 <tr><th>Bus</th><td id="busName"></td></tr>
+                <tr><th>Bus No.</th><td id="registrationNo"></td></tr>
                 <tr><th>Seats</th><td id="seats"></td></tr>
                 <tr><th>Trip Date</th><td id="tripDate"></td></tr>
                 <tr><th>Trip Status</th><td id="tripStatus"></td></tr>
@@ -236,6 +237,7 @@ var bookingsData = [
         fromStopPointName: '${b.fromStopPointName}',
         toStopPointName: '${b.toStopPointName}',
         busName: '${b.busName}',
+        registrationNo: '${b.registrationNo}',
         seatNumbers: '${b.seatNumbers}',
         serviceDate: '${b.serviceDate}',
         tripStatus: '${b.tripStatus}',
@@ -253,6 +255,7 @@ $(document).on('click', '.view-details', function() {
     $('#fromTo').text(b.fromStopName + ' → ' + b.toStopName);
     $('#stopPointfromTo').text(b.fromStopPointName + ' → ' + b.toStopPointName);
     $('#busName').text(b.busName);
+    $('#registrationNo').text(b.registrationNo);
     $('#seats').text(b.seatNumbers);
     $('#tripDate').text(b.serviceDate);
     $('#tripStatus').text(b.tripStatus);

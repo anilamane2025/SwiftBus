@@ -128,6 +128,7 @@ public class BookingDAOImpl implements BookingDAO {
 	            "frsp.pointName, " +
 	            "trsp.pointName, " +
 	            "bus.busName, " +
+	            "bus.registrationNo, " +
 	            "bs.seatNumber, " + 
 	            "trip.serviceDate, " +
 	            "trip.status, " +
@@ -171,6 +172,7 @@ public class BookingDAOImpl implements BookingDAO {
 		            "frsp.pointName, " +
 		            "trsp.pointName, " +
 		            "bus.busName, " +
+		            "bus.registrationNo, " +
 		            "bs.seatNumber, " + 
 		            "trip.serviceDate, " +
 		            "trip.status, " +
