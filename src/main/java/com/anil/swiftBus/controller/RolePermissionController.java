@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.anil.swiftBus.dto.RolePermissionDTO;
 import com.anil.swiftBus.entity.Permission;
 import com.anil.swiftBus.entity.Role;
+import com.anil.swiftBus.enums.UserType;
 import com.anil.swiftBus.service.PermissionService;
 import com.anil.swiftBus.service.RoleService;
 
@@ -57,7 +58,8 @@ public class RolePermissionController {
             rolePermissionMap.put(r.getId(), permissionIds);
         }
 
-        model.addAttribute("roles", roles);
+        //model.addAttribute("roles", roles);
+        model.addAttribute("roles", roles.stream().filter(r->r.getUserType()==UserType.ADMIN).collect(Collectors.toList()));
         model.addAttribute("permissions", permissions);
         model.addAttribute("rolePermissionDTO", new RolePermissionDTO());
         model.addAttribute("rolePermissionMap", rolePermissionMap);
