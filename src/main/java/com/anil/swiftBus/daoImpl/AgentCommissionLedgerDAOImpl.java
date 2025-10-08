@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
@@ -59,9 +60,13 @@ public class AgentCommissionLedgerDAOImpl implements AgentCommissionLedgerDAO {
 
     @Override
     public AgentCommissionLedger findByBookingId(Long bookingId) {
-        return em.createQuery("SELECT l FROM AgentCommissionLedger l WHERE l.booking.bookingId = :bookingId", AgentCommissionLedger.class)
+    	try {
+        return em.createQuery("SELECT l FROM AgentCommissionLedger l JOIN FETCH l.booking b WHERE b.bookingId = :bookingId", AgentCommissionLedger.class)
                  .setParameter("bookingId", bookingId)
                  .getSingleResult();
+    	} catch (NoResultException e) {
+	        return null;
+	    }
     }
 
 	@Override

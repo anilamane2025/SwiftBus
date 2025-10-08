@@ -62,14 +62,14 @@ public class BookingStatusScheduler {
 
 				booking.setStatus(BookingStatus.COMPLETED);
 				bookingDAO.update(booking);
-				
-				AgentCommissionLedger agentCommissionLedger= agentCommissionLedgerDAO.findByBookingId(booking.getBookingId());
-				if(agentCommissionLedger == null)
-					continue;
-				
-				agentCommissionLedger.setSettled(true);
-				agentCommissionLedgerDAO.update(agentCommissionLedger);
-				
+				if(booking.getAgent() != null) {
+					AgentCommissionLedger agentCommissionLedger= agentCommissionLedgerDAO.findByBookingId(booking.getBookingId());
+					if(agentCommissionLedger == null)
+						continue;
+					
+					agentCommissionLedger.setSettled(true);
+					agentCommissionLedgerDAO.update(agentCommissionLedger);
+				}
 				completedCount++;
 			}
 		}

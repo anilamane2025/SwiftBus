@@ -339,20 +339,31 @@ public class BookingServiceImpl implements BookingService {
 		if(booking == null) {
 			throw new RuntimeException("Booking not found");
 		}
-
-		booking.setStatus(BookingStatus.CANCELLED);
-		
-		for (BookingTicket ticket : booking.getBookingTickets()) {
-	        ticket.setBookingTicketStatus(BookingTicketStatus.CANCELLED);
-	    }
-	    bookingDAO.update(booking);
-	    
-	    AgentCommissionLedger agentCommissionLedger= commissionDAO.findByBookingId(booking.getBookingId());
-		if(agentCommissionLedger != null) {
-			agentCommissionLedger.setSettled(false);
-			commissionDAO.update(agentCommissionLedger);
+		LocalDateTime now = LocalDateTime.now();
+		if (booking.getTrip() == null || booking.getTrip().getDepartureDatetime() == null) {
+		    throw new RuntimeException("Trip information not available for this booking.");
 		}
+
+		LocalDateTime showTime = booking.getTrip().getDepartureDatetime().minusHours(4);
 		
+		if (now.isBefore(showTime)) {
+
+			booking.setStatus(BookingStatus.CANCELLED);
+			
+			for (BookingTicket ticket : booking.getBookingTickets()) {
+		        ticket.setBookingTicketStatus(BookingTicketStatus.CANCELLED);
+		    }
+		    bookingDAO.update(booking);
+		    
+		    AgentCommissionLedger agentCommissionLedger= commissionDAO.findByBookingId(bookingId);
+			if(agentCommissionLedger != null) {
+				agentCommissionLedger.setSettled(false);
+				commissionDAO.update(agentCommissionLedger);
+			}
+		}
+		else {
+			throw new RuntimeException("Booking cannot be canceled within 4 hours of departure.");
+		}
 	    
 	}
 
